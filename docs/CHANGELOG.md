@@ -1,5 +1,16 @@
 # Changelog
 
+## Phase 2 — 2026-11-14
+
+- Added full Captions Light color, typography, spacing, radius, and shadow tokens.
+- Added responsive display sizes with `clamp()`.
+- Added Libre Baskerville 700 for headings.
+- Added Button, Card, Badge, Nav, Section, Input, Textarea, Select, Accordion,
+  LoadingState, and ErrorState components.
+- Added `/design` component preview.
+- Added keyboard, mobile navigation, and component browser tests.
+- Documented contrast checks and component rules.
+
 ## Phase 1 — 2026-11-14
 
 - Added Astro 7 static project with TypeScript.

@@ -1,29 +1,30 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import Nav from '../components/ui/Nav.astro';
 ---
 
 <BaseLayout title="ServiceNow Learn Easy">
-  <main id="main" class="mx-auto flex min-h-screen max-w-4xl flex-col justify-center px-6 py-16">
-    <p class="text-sm font-medium tracking-widest text-ash-copy uppercase">ServiceNow Learn Easy</p>
-    <h1 class="font-display mt-6 text-4xl leading-tight text-editorial-ink sm:text-5xl">
+  <Nav />
+  <main
+    id="main"
+    class="mx-auto flex min-h-[70vh] max-w-6xl flex-col justify-center px-gutter py-section"
+  >
+    <p class="text-utility font-medium uppercase text-graphite-copy">ServiceNow Learn Easy</p>
+    <h1 class="font-display mt-6 max-w-3xl text-hero-heading text-balance text-editorial-ink">
       Practical ServiceNow training, built for working professionals.
     </h1>
-    <p class="mt-6 max-w-2xl text-lg text-graphite-copy">
-      Course catalog and learning platform are under construction. Phase 1 foundation is complete.
+    <p class="mt-6 max-w-2xl text-body">
+      Course catalog and learning platform are under construction. Phase 2 design system is ready
+      for review.
     </p>
     <div class="mt-10 flex flex-wrap gap-3">
-      <a
-        class="rounded-[12px] bg-charcoal px-6 py-3 text-sm font-medium text-paper-white hover:bg-editorial-ink"
-        href="https://github.com/kvvasu/ABHYASA"
-      >
-        Project repository
-      </a>
-      <a
-        class="rounded-[12px] border border-mist-border px-6 py-3 text-sm font-medium text-editorial-ink hover:bg-air-wash"
-        href="/api/health"
-      >
+      <Button href="/design" size="lg">
+        View design system
+      </Button>
+      <Button href="/api/health" variant="secondary" size="lg">
         Health check
-      </a>
+      </Button>
     </div>
   </main>
 </BaseLayout>

@@ -1,0 +1,34 @@
+---
+interface Props {
+  tone?: 'paper' | 'wash' | 'ink' | 'halo';
+  padding?: 'none' | 'sm' | 'md' | 'lg';
+  href?: string;
+  class?: string;
+}
+
+const { tone = 'paper', padding = 'md', href, class: className } = Astro.props;
+
+const tones = {
+  paper: 'bg-paper-white border-mist-border text-graphite-copy',
+  wash: 'bg-air-wash border-mist-border text-graphite-copy',
+  ink: 'bg-charcoal border-charcoal text-paper-white',
+  halo: 'bg-cyan-halo border-prism-cyan text-editorial-ink',
+};
+
+const paddings = {
+  none: '',
+  sm: 'p-5',
+  md: 'p-6 sm:p-8',
+  lg: 'p-8 sm:p-10',
+};
+
+const base =
+  'rounded-[12px] border transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal';
+const interactive = href ? 'block hover:border-ash-copy' : '';
+const classes = [base, tones[tone], paddings[padding], interactive, className];
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag class:list={classes} href={href}>
+  <slot />
+</Tag>

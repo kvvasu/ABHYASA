@@ -1,0 +1,70 @@
+---
+interface Props {
+  id?: string;
+  tone?: 'paper' | 'wash' | 'ink';
+  size?: 'normal' | 'compact' | 'hero';
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  align?: 'left' | 'center';
+  headingLevel?: 'h1' | 'h2';
+  class?: string;
+}
+
+const {
+  id,
+  tone = 'paper',
+  size = 'normal',
+  eyebrow,
+  title,
+  description,
+  align = 'left',
+  headingLevel = 'h2',
+  class: className,
+} = Astro.props;
+
+const tones = {
+  paper: 'bg-paper-white',
+  wash: 'bg-air-wash',
+  ink: 'bg-charcoal text-paper-white',
+};
+
+const sizes = {
+  normal: 'py-section',
+  compact: 'py-section-compact',
+  hero: 'pt-16 pb-section sm:pt-24',
+};
+
+const Heading = headingLevel;
+const titleSize = headingLevel === 'h1' ? 'text-hero-heading' : 'text-feature-heading';
+const headingTone = tone === 'ink' ? 'text-paper-white' : 'text-editorial-ink';
+const copyTone = tone === 'ink' ? 'text-sky-fade' : 'text-graphite-copy';
+const eyebrowTone = tone === 'ink' ? 'text-sky-fade' : 'text-graphite-copy';
+---
+
+<section id={id} class:list={[tones[tone], sizes[size], className]}>
+  <div class="mx-auto max-w-6xl px-gutter">
+    {(eyebrow || title || description) && (
+      <header
+        class:list={['mb-10 max-w-3xl sm:mb-14', align === 'center' && 'mx-auto text-center']}
+      >
+        {eyebrow && (
+          <p class:list={['mb-4 text-utility font-medium uppercase', eyebrowTone]}>{eyebrow}</p>
+        )}
+        {title && (
+          <Heading
+            class:list={['text-balance', titleSize, headingTone, align === 'center' && 'mx-auto']}
+          >
+            {title}
+          </Heading>
+        )}
+        {description && (
+          <p class:list={['mt-4 max-w-2xl text-body', copyTone, align === 'center' && 'mx-auto']}>
+            {description}
+          </p>
+        )}
+      </header>
+    )}
+    <slot />
+  </div>
+</section>

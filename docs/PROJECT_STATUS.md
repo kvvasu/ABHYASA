@@ -1,25 +1,25 @@
 # Project Status
 
-Current Phase: Phase 1 — Project Foundation (awaiting approval)
-Current Branch: `feature/phase-01-foundation`
+Current Phase: Phase 2 — Design System (awaiting approval)
+Current Branch: `feature/phase-02-design-system`
 Last Commit: see `git log -1` on this branch
 Last Updated: 2026-11-14
 
 ## Completed
 
-- Phase 0 approved. PR #1 merged into `develop`.
-- Phase 0 decisions recorded: paid PDFs deferred; Libre Baskerville and Inter approved as free font substitutes.
-- Astro 7 static project created with TypeScript.
-- Tailwind CSS v4 configured with Captions Light tokens.
-- Base layout and placeholder home page created.
-- Native Cloudflare Pages Function `GET /api/health` created.
-- Vitest, Playwright, ESLint, Prettier, and EditorConfig configured.
-- Cloudflare Pages configuration and `.env.example` added.
-- Unit and browser tests pass. Production build passes.
+- Phase 0 and Phase 1 approved. PR #2 merged into `develop`.
+- Full Captions Light color, typography, spacing, radius, and shadow tokens.
+- Responsive display sizes with `clamp()`.
+- Libre Baskerville 400/700 and Inter variable fonts, self-hosted.
+- Button, Card, Badge, Nav, Section, Input, Textarea, Select, Accordion, LoadingState, and ErrorState components.
+- `/design` component preview with foundations, components, and states.
+- Home page updated to use navigation and design tokens.
+- Keyboard, mobile navigation, and component browser tests.
+- Contrast checks documented in `docs/DESIGN_SYSTEM.md`.
 
 ## In Progress
 
-- Phase 1 review by project owner.
+- Phase 2 review by project owner.
 
 ## Blocked
 
@@ -33,23 +33,24 @@ Last Updated: 2026-11-14
 
 - Unit tests: Pass. 1 file, 1 test.
 - Integration tests: Pass for health endpoint through `wrangler pages dev`.
-- Browser tests: Pass. 2 Playwright tests (Chromium).
+- Browser tests: Pass. 6 Playwright tests (Chromium).
 - Build: Pass. `astro check` reports 0 errors.
 - Lint and format: Pass.
+- Visual review: Desktop 1440×900 and mobile 390×844 checked.
 
 ## Known Issues
 
-- Astro's official Cloudflare adapter no longer supports Cloudflare Pages. Architecture corrected in Phase 1: static Astro build plus native `functions/` Pages Functions. Required stack preserved.
+- Captions Light reference file was not available. Tokens and component rules are implemented; visual approval is required.
+- Licensed Exposure and DenimINK fonts are not available. Libre Baskerville and Inter are approved substitutes.
+- Ash Copy is restricted to disabled text and Prism Cyan to accents because their contrast is below AA for body text.
 - `astro dev` does not serve Pages Functions. Use `npm run preview` for `/api/*`.
-- Home page is a Phase 1 placeholder. Real design is Phase 2.
 - Cloudflare Pages deployment is not tested because account access is not available.
 
 ## Next Action
 
-- Owner reviews Phase 1, then Phase 2 — Design System starts after approval.
+- Owner reviews `/design`, then Phase 3 — Public Website starts after approval.
 
 ## Approval Required
 
-- Yes. Approve Phase 1.
-- Confirm the Phase 1 architecture correction (static Astro + native Pages Functions).
-- Provide Cloudflare account access before deployment testing.
+- Yes. Approve Phase 2.
+- Confirm the visual direction and font substitutes.
