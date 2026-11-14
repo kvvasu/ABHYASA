@@ -3,18 +3,24 @@
 Format: decision, reason, consequence. Do not change an accepted decision
 without approval.
 
-## ADR-001: Astro 7 with Cloudflare Pages adapter
+## ADR-001: Astro 7 static build with native Cloudflare Pages Functions
 
-Status: proposed (Phase 0).
+Status: accepted (Phase 1 correction, 2026-11-14).
 
-Decision: Use Astro 7.4.x with `@astrojs/cloudflare` 14.4.x. Public pages are
-static. API routes and protected shells are server-rendered.
+Decision: Use Astro 7.4.x with `output: 'static'`. Server code lives in the native
+`functions/` directory as Cloudflare Pages Functions. Do not use
+`@astrojs/cloudflare`.
 
-Reason: The required stack names Astro and Cloudflare Pages. The adapter versions
-are compatible: adapter peer requires Astro ^7.4.0. Astro 7 requires Node >=
-22.23.4; the development machine has Node 24.19.0.
+Reason: The required stack names Astro and Cloudflare Pages Functions. Astro's
+official Cloudflare adapter v13+ removed Pages support and targets Workers only.
+A static Astro build plus native Pages Functions keeps the required hosting model.
+Astro 7 requires Node >= 22.23.4; the development machine has Node 24.19.0.
 
-Consequence: Pin versions in `package.json`. Use Node 22 or newer in CI.
+Consequence: API handlers use the Pages Functions signature (`onRequestGet`,
+`onRequestPost`). Full-stack local preview uses `wrangler pages dev ./dist`.
+`astro dev` serves static pages only. Pin versions. Use Node 22 or newer in CI.
+This supersedes the Phase 0 adapter plan. The change preserves the required stack;
+it does not add a service.
 
 ## ADR-002: Verify Firebase ID tokens with `jose`, not `firebase-admin`
 
