@@ -1,0 +1,112 @@
+---
+import PublicLayout from '../layouts/PublicLayout.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import Input from '../components/ui/Input.astro';
+import Section from '../components/ui/Section.astro';
+import Select from '../components/ui/Select.astro';
+import Textarea from '../components/ui/Textarea.astro';
+---
+
+<PublicLayout
+  title="Contact — ServiceNow Learn Easy"
+  description="Contact the ServiceNow Learn Easy team about courses, access, or payment questions."
+>
+  <Section
+    size="hero"
+    headingLevel="h1"
+    eyebrow="Contact"
+    title="Send a clear question."
+    description="Course questions, access problems, and payment issues are easier to resolve when you include the course name and order ID."
+  >
+    <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+      <Card>
+        <h2 class="text-feature-heading">Message form</h2>
+        <p class="mt-3 text-body">
+          Form delivery is not connected in this preview. The fields show the planned layout and
+          validation states.
+        </p>
+
+        <form class="mt-6 space-y-5" aria-describedby="contact-form-status">
+          <Input
+            id="contact-name"
+            label="Name"
+            name="name"
+            autocomplete="name"
+            placeholder="Your name"
+            required
+          />
+          <Input
+            id="contact-email"
+            label="Email address"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+            required
+          />
+          <Select
+            id="contact-topic"
+            label="Topic"
+            name="topic"
+            placeholder="Select a topic"
+            options={[
+              { value: 'course', label: 'Course content' },
+              { value: 'access', label: 'Account or access' },
+              { value: 'payment', label: 'Payment or refund' },
+              { value: 'other', label: 'Something else' },
+            ]}
+            required
+          />
+          <Textarea
+            id="contact-message"
+            label="Message"
+            name="message"
+            placeholder="Include the course name and order ID when relevant."
+            rows={5}
+            required
+          />
+          <Button type="submit" disabled>
+            Send message
+          </Button>
+          <p id="contact-form-status" role="status" class="text-caption text-graphite-copy">
+            Sending is disabled until the contact API is connected.
+          </p>
+        </form>
+      </Card>
+
+      <div class="space-y-5">
+        <Card tone="wash">
+          <p class="text-utility font-medium uppercase text-graphite-copy">
+            Sample contact details
+          </p>
+          <h2 class="mt-3 text-feature-label font-medium">Replace before launch</h2>
+          <p class="mt-3 text-body">
+            Email: <span class="font-medium">support@example.com</span>
+          </p>
+          <p class="mt-2 text-caption text-graphite-copy">
+            This address is a placeholder. Do not send personal or payment information to it.
+          </p>
+        </Card>
+
+        <Card>
+          <h2 class="text-feature-label font-medium">What to include</h2>
+          <ul class="mt-4 space-y-3 text-body">
+            <li>The course name.</li>
+            <li>Your order ID, if you have one. Never send card details.</li>
+            <li>A short description of the problem.</li>
+            <li>The device and browser, for playback issues.</li>
+          </ul>
+        </Card>
+
+        <Card>
+          <h2 class="text-feature-label font-medium">Response time</h2>
+          <p class="mt-3 text-body">
+            No response-time promise is published in this preview. The support process will be
+            confirmed before launch.
+          </p>
+        </Card>
+      </div>
+    </div>
+  </Section>
+</PublicLayout>

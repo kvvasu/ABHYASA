@@ -1,0 +1,97 @@
+---
+import PublicLayout from '../layouts/PublicLayout.astro';
+import Card from '../components/ui/Card.astro';
+import Button from '../components/ui/Button.astro';
+import Section from '../components/ui/Section.astro';
+---
+
+<PublicLayout
+  title="About — ServiceNow Learn Easy"
+  description="Why ServiceNow Learn Easy exists and the teaching approach behind the courses."
+>
+  <Section
+    size="hero"
+    headingLevel="h1"
+    eyebrow="About"
+    title="Practical teaching, without the theatre."
+    description="ServiceNow Learn Easy is an independent training project. The goal is simple: explain the platform through the tasks administrators actually perform."
+  >
+    <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+      <div class="space-y-6 text-body">
+        <p>
+          Most ServiceNow learning material explains every field on every form. That is useful as a
+          reference. It is a poor way to learn a workflow.
+        </p>
+        <p>
+          The courses here start with a task: resolve an incident, route a problem, run a discovery
+          schedule, or publish a knowledge article. Each lesson shows the platform behavior that
+          makes the task work, then stops.
+        </p>
+        <p>
+          Lessons are short by design. One idea, one demonstration, one result. Progress saves to
+          your account so you can continue on another device.
+        </p>
+      </div>
+
+      <Card tone="wash">
+        <p class="text-utility font-medium uppercase text-graphite-copy">Teaching principles</p>
+        <ul class="mt-5 space-y-4">
+          <li>
+            <h2 class="text-feature-label font-medium">Task before theory</h2>
+            <p class="mt-1 text-caption text-graphite-copy">
+              Start with the work, then explain why the platform behaves that way.
+            </p>
+          </li>
+          <li>
+            <h2 class="text-feature-label font-medium">One idea per lesson</h2>
+            <p class="mt-1 text-caption text-graphite-copy">
+              Short lessons are easier to finish and easier to revisit.
+            </p>
+          </li>
+          <li>
+            <h2 class="text-feature-label font-medium">No invented proof</h2>
+            <p class="mt-1 text-caption text-graphite-copy">
+              No student reviews, completion counts, or credentials are published unless they can be
+              verified.
+            </p>
+          </li>
+        </ul>
+      </Card>
+    </div>
+  </Section>
+
+  <Section
+    tone="wash"
+    eyebrow="Instructor"
+    title="Biography pending verification"
+    description="This section is intentionally incomplete. Publishing credentials before verification would mislead students."
+  >
+    <Card>
+      <h2 class="text-card-heading">What will appear here</h2>
+      <ul class="mt-4 space-y-3 text-body">
+        <li>Verified professional background and relevant ServiceNow experience.</li>
+        <li>Certifications, with issuing body and validity where applicable.</li>
+        <li>Teaching experience and the subjects the instructor can support.</li>
+        <li>A direct contact route for course questions.</li>
+      </ul>
+      <p class="mt-6 text-caption text-graphite-copy">
+        Until this information is verified, treat all instructor content on this site as sample copy
+        for review.
+      </p>
+      <Button href="/contact" variant="secondary" size="sm" class="mt-6">
+        Contact page
+      </Button>
+    </Card>
+  </Section>
+
+  <Section
+    size="compact"
+    align="center"
+    title="Review the catalog instead."
+    description="Course outlines are sample content. You can review the structure before enrollment opens."
+  >
+    <div class="flex justify-center">
+      <Button href="/courses">Browse courses</Button>
+    </div>
+  </Section>
+</PublicLayout>

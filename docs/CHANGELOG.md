@@ -1,5 +1,18 @@
 # Changelog
 
+## Phase 3 — 2026-11-14
+
+- Added public layout, footer, and shared public navigation.
+- Added Home, Course Catalog, five Course Details pages, About, FAQ, Contact,
+  Privacy, Terms, Refund, and 404 pages.
+- Added sample course data and clearly marked sample content notices.
+- Added a disabled contact form that states delivery is not connected.
+- Added draft notices to all legal pages.
+- Added Open Graph, Twitter card, theme color, and canonical metadata.
+- Hid login and register links on public pages until Phase 5.
+- Added browser tests for every public route, metadata, mobile navigation, and
+  horizontal overflow.
+
 ## Phase 2 — 2026-11-14
 
 - Added full Captions Light color, typography, spacing, radius, and shadow tokens.

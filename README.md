@@ -2,8 +2,8 @@
 
 Learning Management System (LMS) for ServiceNow training courses.
 
-Status: Phase 1 (Project Foundation). Application code is early. Public pages are
-placeholders until Phase 3.
+Status: Phase 3 (Public Website). Public pages are sample content for review.
+Authentication, payment, and paid video access are not implemented.
 
 ## Stack
 
