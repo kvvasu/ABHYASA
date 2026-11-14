@@ -15,6 +15,26 @@ GitHub OAuth App, no paid service. Decap's own GitHub backend accepts a custom
 Netlify Identity were rejected because they add a third-party or extra-platform
 dependency for the same result.
 
+### CMS media configuration
+
+Decap CMS 3.17.3 validates `config.yml` against an embedded JSON schema. The
+schema requires either a top-level `media_folder` or `media_library`; omitting
+both causes `/admin/` to report "Error loading the CMS configuration" with
+`media_folder` / `media_library` required-property errors.
+
+This CMS uses the built-in media folder, not a third-party library:
+
+```yaml
+media_folder: public/uploads/public
+public_folder: /uploads/public
+```
+
+This path serves public marketing assets only. It is outside the Markdown course
+collection. Never upload paid files, private video IDs, student data, or secrets.
+No media upload workflow is enabled for course fields; the folder exists to
+satisfy Decap's schema and to make any future public assets explicit. A future
+change to paid/private media requires a separate access-controlled design.
+
 Decap's GitHub backend needs a server to hold the client secret. Cloudflare Pages
 Functions provide that server on the same origin as the site:
 

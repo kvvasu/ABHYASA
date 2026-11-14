@@ -10,6 +10,11 @@ backend:
   auth_endpoint: /api/auth/github
   site_domain: https://servicenow-learn-easy.pages.dev
 
+# Public marketing assets only; never upload paid/private files or student data.
+# This required Decap setting is intentionally separate from course Markdown.
+media_folder: public/uploads/public
+public_folder: /uploads/public
+
 # Each save creates a pull request instead of writing to develop directly.
 publish_mode: editorial_workflow
 

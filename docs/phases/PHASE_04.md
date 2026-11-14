@@ -4,6 +4,18 @@ Status: Awaiting approval. Live GitHub OAuth login is not verified.
 Date: 2026-11-14.
 Branch: `feature/phase-04-content-management`.
 
+## CMS configuration correction (2026-11-14)
+
+Decap CMS 3.17.3's embedded config schema requires either a top-level
+`media_folder` or a top-level `media_library`. The original `config.yml` had
+neither, causing the admin's "Error loading the CMS configuration" message and
+three validation errors. Added `media_folder: public/uploads/public` and
+`public_folder: /uploads/public`. The upload directory is deliberately outside
+`src/content/courses`; it is for public marketing assets only. It does not make
+paid or private files appropriate for this repository. No external media library
+is configured, avoiding an Uploadcare account and preventing accidental reliance
+on an unconfigured third party.
+
 ## Goal
 
 Move public course content into Markdown content collections, validate it at

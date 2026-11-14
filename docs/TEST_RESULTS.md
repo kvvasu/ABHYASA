@@ -1,6 +1,34 @@
 # Test Results
 
-## Phase 4 — 2026-11-14
+## Phase 4 — CMS config fix — 2026-11-14
+
+Environment: Node 24.19.0, npm 11.17.0, Linux (WSL), Chromium 159 headless,
+Wrangler 4.162.0.
+
+| Check                   | Command                    | Result                                                                    |
+| ----------------------- | -------------------------- | ------------------------------------------------------------------------- |
+| Type and Astro check    | `npm run check`            | Pass. 0 errors, 0 warnings, 0 hints (49 files).                           |
+| Unit tests              | `npm test`                 | Pass. 4 files, 19 tests.                                                  |
+| Lint                    | `npm run lint`             | Pass.                                                                     |
+| Format check            | `npm run format:check`     | Pass.                                                                     |
+| Production build        | `npm run build`            | Pass. 15 pages.                                                           |
+| Browser tests           | `npm run test:e2e`         | Pass. 29 tests in Chromium through local Cloudflare Pages preview.        |
+| Live CMS config         | Chromium `/admin/`         | Pass. Decap shows "Login with GitHub"; no config error or browser errors. |
+| Live GitHub OAuth login | `/admin/` on deployed site | Not run. Credentials and deployed OAuth App unavailable.                  |
+
+Current fix verification: `npm run check`, `npm run lint`, `npm run format:check`,
+`npm test`, `npm run build`, `npm run scan:public`, and `npm run test:e2e` all
+pass after the configuration change. The E2E suite now includes a real browser
+assertion that Decap reaches its GitHub login screen without config errors.
+
+The unit regression test parses `public/admin/config.yml`, checks the exact
+Decap 3.17.3 pin, and asserts that `media_folder` exists at the top level, points
+to `public/uploads/public`, and remains outside `src/content/courses`. It also
+checks the backend, editorial workflow, course collection, and absence of private
+fields. The browser test verifies the served config retains the top-level media
+settings. Live GitHub OAuth is not tested or claimed to work.
+
+## Phase 4 — Initial implementation — 2026-11-14
 
 Environment: Node 24.19.0, npm 11.17.0, Linux (WSL), Chromium 159 headless,
 Wrangler 4.162.0.

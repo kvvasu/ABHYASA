@@ -1,5 +1,14 @@
 # Changelog
 
+## Phase 4 CMS configuration fix — 2026-11-14
+
+- Added the required top-level Decap `media_folder` and `public_folder` settings
+  for public marketing assets only; private course files remain out of public Git.
+- Added unit and browser regression checks for the media settings, CMS backend,
+  editorial workflow, collection, and exact Decap 3.17.3 pin.
+- Documented the missing schema requirements and safe upload boundary in
+  `docs/CMS.md` and `docs/phases/PHASE_04.md`.
+
 ## Phase 4 — 2026-11-14
 
 - Added the `courses` Astro content collection with a validation schema for

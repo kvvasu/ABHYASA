@@ -23,6 +23,10 @@ Last Updated: 2026-11-14
 
 ### Completed in Phase 4 (awaiting approval)
 
+- Fixed Decap CMS 3.17.3 configuration validation: added the required top-level
+  `media_folder` / `public_folder` for public marketing assets and regression
+  tests. Live `/admin/` browser test reaches the GitHub login screen without
+  config errors; GitHub OAuth itself remains unverified.
 - `courses` Astro content collection with a validation schema for required text,
   enums, integer prices, dates, and non-empty modules and lessons.
 - Five Markdown courses in `src/content/courses/` with frontmatter and a public
@@ -57,9 +61,9 @@ Last Updated: 2026-11-14
 
 ## Test Status
 
-- Unit tests: Pass. 3 files, 12 tests.
-- Astro and type check: Pass. 0 errors, 0 warnings (48 files).
-- Browser tests: Pass. 27 Playwright tests (Chromium) through `wrangler pages dev`.
+- Unit tests: Pass. 4 files, 19 tests.
+- Astro and type check: Pass. 0 errors, 0 warnings (49 files).
+- Browser tests: Pass. 29 Playwright tests (Chromium) through `wrangler pages dev`.
 - Build: Pass. 15 pages generated from Markdown collections.
 - Lint and format: Pass.
 - Public output scan: Pass. 33 files in `dist/`, no private lesson data or secrets.
