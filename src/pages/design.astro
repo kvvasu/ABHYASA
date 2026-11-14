@@ -1,0 +1,447 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Accordion from '../components/ui/Accordion.astro';
+import Badge from '../components/ui/Badge.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import ErrorState from '../components/ui/ErrorState.astro';
+import Input from '../components/ui/Input.astro';
+import LoadingState from '../components/ui/LoadingState.astro';
+import Nav from '../components/ui/Nav.astro';
+import Section from '../components/ui/Section.astro';
+import Select from '../components/ui/Select.astro';
+import Textarea from '../components/ui/Textarea.astro';
+
+const swatches = [
+  {
+    name: 'Paper White',
+    token: 'paper-white',
+    hex: '#FFFFFF',
+    swatch: 'bg-paper-white',
+    border: true,
+  },
+  { name: 'Air Wash', token: 'air-wash', hex: '#EFFBFF', swatch: 'bg-air-wash', border: true },
+  {
+    name: 'Mist Border',
+    token: 'mist-border',
+    hex: '#E8EFF2',
+    swatch: 'bg-mist-border',
+    border: false,
+  },
+  {
+    name: 'Steel Inset',
+    token: 'steel-inset',
+    hex: '#D0D6D7',
+    swatch: 'bg-steel-inset',
+    border: false,
+  },
+  { name: 'Ash Copy', token: 'ash-copy', hex: '#7E8486', swatch: 'bg-ash-copy', border: false },
+  {
+    name: 'Graphite Copy',
+    token: 'graphite-copy',
+    hex: '#434647',
+    swatch: 'bg-graphite-copy',
+    border: false,
+  },
+  {
+    name: 'Editorial Ink',
+    token: 'editorial-ink',
+    hex: '#2A2C2D',
+    swatch: 'bg-editorial-ink',
+    border: false,
+  },
+  { name: 'Charcoal', token: 'charcoal', hex: '#1D1F20', swatch: 'bg-charcoal', border: false },
+  {
+    name: 'Prism Cyan',
+    token: 'prism-cyan',
+    hex: '#00D0FF',
+    swatch: 'bg-prism-cyan',
+    border: false,
+  },
+  { name: 'Sky Fade', token: 'sky-fade', hex: '#A6ECFF', swatch: 'bg-sky-fade', border: false },
+  { name: 'Cyan Halo', token: 'cyan-halo', hex: '#CCF6FF', swatch: 'bg-cyan-halo', border: false },
+];
+
+const typeScale = [
+  {
+    role: 'Large display',
+    className: 'text-large-display',
+    sample: 'Learn by doing',
+    meta: '72 / 44 px',
+  },
+  {
+    role: 'Hero heading',
+    className: 'text-hero-heading',
+    sample: 'ServiceNow, clearly',
+    meta: '48 / 36 px',
+  },
+  {
+    role: 'Feature heading',
+    className: 'text-feature-heading',
+    sample: 'Built for real work',
+    meta: '32 / 28 px',
+  },
+  {
+    role: 'Card heading',
+    className: 'text-card-heading',
+    sample: 'Incident Management',
+    meta: '24 px',
+  },
+  {
+    role: 'Feature label',
+    className: 'text-feature-label',
+    sample: 'What you will learn',
+    meta: '18 px',
+  },
+  {
+    role: 'Body',
+    className: 'text-body',
+    sample: 'Practical lessons, short modules, and progress that follows you.',
+    meta: '16 px',
+  },
+  { role: 'Editor label', className: 'text-label', sample: 'Course level', meta: '14 px' },
+  { role: 'Caption', className: 'text-caption', sample: 'Updated 14 November 2026', meta: '13 px' },
+  {
+    role: 'Utility',
+    className: 'text-utility uppercase',
+    sample: 'Foundation series',
+    meta: '11 px',
+  },
+];
+
+const faqItems = [
+  {
+    question: 'How long do I have access to a course?',
+    answer:
+      'Access stays active while your enrollment is active. Progress saves to your account and loads on another device.',
+    open: true,
+  },
+  {
+    question: 'Are the videos live or recorded?',
+    answer:
+      'Recorded lessons with optional study notes. Each lesson has a manual completion control and a resume position when available.',
+  },
+  {
+    question: 'What happens if a payment is delayed?',
+    answer:
+      'Access activates only after the server verifies the payment provider event. If activation takes longer than expected, contact support with your order ID.',
+  },
+];
+---
+
+<BaseLayout
+  title="Design System — ServiceNow Learn Easy"
+  description="Captions Light design system preview for ServiceNow Learn Easy."
+  noindex
+>
+  <Nav />
+
+  <main id="main">
+    <Section
+      size="hero"
+      headingLevel="h1"
+      eyebrow="Captions Light"
+      title="A calm, editorial learning interface."
+      description="Design system preview. Every token, component, and state used across the public site and the student workspace."
+    >
+      <div class="flex flex-wrap items-center gap-3">
+        <Button href="#buttons" size="lg">
+          Review components
+        </Button>
+        <Button href="#foundations" variant="secondary" size="lg">
+          See foundations
+        </Button>
+      </div>
+
+      <div class="grain mt-14 overflow-hidden rounded-[40px] border border-mist-border bg-air-wash p-8 sm:p-12">
+        <p class="text-utility font-medium uppercase text-graphite-copy">Feature panel</p>
+        <p class="font-display mt-5 max-w-3xl text-large-display text-balance text-editorial-ink">
+          Editorial spacing. Quiet color. Clear controls.
+        </p>
+        <p class="mt-6 max-w-xl text-body text-graphite-copy">
+          White paper, pale blue workspaces, charcoal actions, and a small cyan signal. Thin borders
+          replace heavy shadows.
+        </p>
+      </div>
+    </Section>
+
+    <Section
+      id="foundations"
+      tone="wash"
+      eyebrow="01 Foundations"
+      title="Color"
+      description="Brand tokens are unchanged. Two functional status colors support accessible error and success messages."
+    >
+      <ul class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        {swatches.map((color) => (
+          <li>
+            <div
+              class:list={[
+                'h-24 rounded-[12px] border',
+                color.swatch,
+                color.border ? 'border-mist-border' : 'border-transparent',
+              ]}
+            />
+            <p class="mt-3 text-label font-medium text-editorial-ink">{color.name}</p>
+            <p class="mt-1 text-caption text-graphite-copy">
+              {color.hex} · <span class="font-mono text-[12px]">{color.token}</span>
+            </p>
+          </li>
+        ))}
+      </ul>
+
+      <div class="mt-10 rounded-[12px] border border-mist-border bg-paper-white p-6">
+        <h3 class="text-feature-label font-medium">Contrast checks</h3>
+        <ul class="mt-3 grid gap-2 text-caption text-graphite-copy sm:grid-cols-2">
+          <li>Graphite on white: 9.52:1. Passes AA for body text.</li>
+          <li>Graphite on Air Wash: 9.03:1. Passes AA.</li>
+          <li>White on Charcoal: 16.55:1. Passes AAA.</li>
+          <li>Alert Ink on white: 6.81:1. Passes AA.</li>
+          <li>Ash Copy on white: 3.80:1. Used for disabled text only, never body copy.</li>
+          <li>Prism Cyan on white: 1.83:1. Decorative and control accents only, never text.</li>
+        </ul>
+      </div>
+    </Section>
+
+    <Section
+      eyebrow="02 Foundations"
+      title="Typography"
+      description="Libre Baskerville for display and headings. Inter for interface text. Both are open licensed and self-hosted."
+    >
+      <dl class="divide-y divide-mist-border border-y border-mist-border">
+        {typeScale.map((type) => (
+          <div class="grid gap-3 py-6 sm:grid-cols-[190px_1fr_100px] sm:items-baseline sm:gap-6">
+            <dt class="text-utility font-medium uppercase text-graphite-copy">{type.role}</dt>
+            <dd class:list={['text-editorial-ink', type.className]}>{type.sample}</dd>
+            <dd class="text-caption text-graphite-copy sm:text-right">{type.meta}</dd>
+          </div>
+        ))}
+      </dl>
+    </Section>
+
+    <Section
+      id="buttons"
+      tone="wash"
+      eyebrow="03 Components"
+      title="Buttons"
+      description="Charcoal primary actions. White secondary actions. Cyan stays a small signal, not a large surface."
+    >
+      <div class="space-y-8">
+        <div class="flex flex-wrap items-center gap-3">
+          <Button>Primary action</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="ghost">Ghost</Button>
+          <Button variant="cyan">Learning control</Button>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <Button size="sm">Small</Button>
+          <Button size="md">Medium</Button>
+          <Button size="lg">Large</Button>
+          <Button disabled>Disabled</Button>
+          <Button variant="secondary" disabled>
+            Disabled
+          </Button>
+        </div>
+      </div>
+    </Section>
+
+    <Section
+      eyebrow="04 Components"
+      title="Cards and course presentation"
+      description="Twelve pixel radius, thin borders, and generous padding. Pale blue marks a learning workspace."
+    >
+      <div class="grid gap-5 md:grid-cols-3">
+        <Card>
+          <Badge>Beginner</Badge>
+          <h3 class="mt-5 text-card-heading">ServiceNow ITSM Fundamentals</h3>
+          <p class="mt-3 text-body">
+            Incident, Problem, Change, and the day-to-day work of a ServiceNow administrator.
+          </p>
+          <p class="mt-5 text-caption text-graphite-copy">24 lessons · 6 modules</p>
+          <Button href="#buttons" variant="secondary" size="sm" class="mt-6">
+            View course
+          </Button>
+        </Card>
+
+        <Card tone="wash">
+          <p class="text-utility font-medium uppercase text-graphite-copy">Workspace</p>
+          <h3 class="mt-4 text-card-heading">Continue learning</h3>
+          <p class="mt-3 text-body">Lesson 7 of 24. Your position is saved across devices.</p>
+          <div class="mt-6 h-2 rounded-[9999px] bg-steel-inset">
+            <div class="h-2 w-[29%] rounded-[9999px] bg-charcoal"></div>
+          </div>
+          <Button size="sm" class="mt-6">
+            Resume lesson
+          </Button>
+        </Card>
+
+        <Card tone="ink">
+          <Badge tone="ink">New</Badge>
+          <h3 class="mt-5 text-card-heading text-paper-white">ITOM Discovery</h3>
+          <p class="mt-3 text-body text-sky-fade">
+            Discovery patterns, mid servers, and the path from scan to CMDB.
+          </p>
+          <p class="mt-6 text-caption text-sky-fade">18 lessons · 5 modules</p>
+        </Card>
+      </div>
+    </Section>
+
+    <Section
+      tone="wash"
+      eyebrow="05 Components"
+      title="Form controls"
+      description="Native controls with visible labels, hints, and accessible error messages."
+    >
+      <div class="grid gap-6 rounded-[12px] border border-mist-border bg-paper-white p-6 sm:p-8 md:grid-cols-2">
+        <Input
+          id="preview-email"
+          label="Email address"
+          type="email"
+          placeholder="you@example.com"
+          hint="Use the email linked to your account."
+          autocomplete="email"
+          required
+        />
+        <Input
+          id="preview-password"
+          label="Password"
+          type="password"
+          placeholder="At least 12 characters"
+          autocomplete="current-password"
+          required
+        />
+        <Select
+          id="preview-course"
+          label="Course"
+          placeholder="Select a course"
+          hint="Prices are confirmed at checkout."
+          options={[
+            { value: 'itsm', label: 'ServiceNow ITSM Fundamentals' },
+            { value: 'itom', label: 'ServiceNow ITOM Discovery' },
+            { value: 'cmdb', label: 'ServiceNow CMDB and IRE' },
+          ]}
+          required
+        />
+        <Input
+          id="preview-invalid"
+          label="Coupon code"
+          placeholder="Optional"
+          value="SUMMER"
+          error="This code is not valid for the selected course."
+        />
+        <Textarea
+          id="preview-notes"
+          label="Learning goal"
+          placeholder="What do you want to be able to do after this course?"
+          hint="Optional. Helps the instructor improve examples."
+          class="md:col-span-2"
+        />
+        <Input
+          id="preview-disabled"
+          label="Account email"
+          value="student@example.com"
+          hint="Contact support to change the account email."
+          disabled
+          class="md:col-span-2"
+        />
+      </div>
+    </Section>
+
+    <Section
+      eyebrow="06 Components"
+      title="Sections and accordions"
+      description="Section headers set the rhythm. Native disclosure elements keep the FAQ keyboard accessible."
+    >
+      <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+        <div class="rounded-[12px] border border-mist-border bg-air-wash p-8">
+          <p class="text-utility font-medium uppercase text-graphite-copy">Section layout</p>
+          <h3 class="mt-4 text-feature-heading">One clear idea per section.</h3>
+          <p class="mt-4 text-body">
+            Generous spacing on public pages. Compact spacing in the student workspace. The content
+            column stays readable at every width.
+          </p>
+        </div>
+        <Accordion items={faqItems} />
+      </div>
+    </Section>
+
+    <Section
+      tone="ink"
+      eyebrow="07 States"
+      title="Loading and error"
+      description="Status messages use text and icons, not color alone. Live regions announce changes to assistive technology."
+    >
+      <div class="grid gap-5 md:grid-cols-2">
+        <LoadingState label="Loading lesson" />
+        <ErrorState
+          title="Video could not load"
+          message="Check your connection. If the problem continues, refresh the lesson."
+        >
+          <Button variant="secondary" size="sm">
+            Try again
+          </Button>
+        </ErrorState>
+      </div>
+    </Section>
+
+    <Section
+      tone="wash"
+      eyebrow="08 Foundations"
+      title="Spacing, radius, and elevation"
+      description="Thin borders separate surfaces. Shadows appear only on floating navigation and layered controls."
+    >
+      <div class="grid gap-8 lg:grid-cols-2">
+        <div>
+          <h3 class="text-feature-label font-medium">Radius</h3>
+          <div class="mt-5 flex flex-wrap items-end gap-4">
+            <div class="grid h-24 w-24 place-items-center rounded-[12px] border border-mist-border bg-paper-white text-caption">
+              12 card
+            </div>
+            <div class="grid h-24 w-24 place-items-center rounded-[20px] border border-mist-border bg-paper-white text-caption">
+              20 media
+            </div>
+            <div class="grid h-24 w-24 place-items-center rounded-[30px] border border-mist-border bg-paper-white text-caption">
+              30 nav
+            </div>
+            <div class="grid h-24 w-24 place-items-center rounded-[40px] border border-mist-border bg-paper-white text-caption">
+              40 feature
+            </div>
+            <div class="grid h-24 w-24 place-items-center rounded-[9999px] border border-mist-border bg-paper-white text-caption">
+              pill
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-feature-label font-medium">Spacing</h3>
+          <div class="mt-5 space-y-3">
+            <div class="flex items-center gap-4">
+              <div class="h-4 w-16 rounded-[9999px] bg-charcoal"></div>
+              <span class="text-caption">Section · 64–112 px</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="h-4 w-10 rounded-[9999px] bg-charcoal"></div>
+              <span class="text-caption">Compact section · 40–64 px</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="h-4 w-6 rounded-[9999px] bg-charcoal"></div>
+              <span class="text-caption">Gutter · 20–32 px</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="h-4 w-4 rounded-[9999px] bg-charcoal"></div>
+              <span class="text-caption">Dashboard · 16 px</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Section>
+  </main>
+
+  <footer class="border-t border-mist-border px-gutter py-10">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 text-caption text-graphite-copy">
+      <p>ServiceNow Learn Easy. Design system preview.</p>
+      <a href="/" class="underline underline-offset-4 hover:text-editorial-ink">
+        Back to home
+      </a>
+    </div>
+  </footer>
+</BaseLayout>

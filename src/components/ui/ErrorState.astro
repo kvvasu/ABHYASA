@@ -1,0 +1,35 @@
+---
+interface Props {
+  title?: string;
+  message?: string;
+  class?: string;
+}
+
+const {
+  title = 'Something went wrong',
+  message = 'The request did not complete. Try again.',
+  class: className,
+} = Astro.props;
+---
+
+<div
+  role="alert"
+  aria-live="assertive"
+  class:list={['rounded-[12px] border border-alert-ink/40 bg-paper-white p-6 sm:p-8', className]}
+>
+  <div class="flex items-start gap-4">
+    <span
+      aria-hidden="true"
+      class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-alert-ink text-label font-semibold text-alert-ink"
+    >
+      !
+    </span>
+    <div>
+      <h3 class="text-feature-label font-medium text-editorial-ink">{title}</h3>
+      <p class="mt-1 text-caption text-graphite-copy">{message}</p>
+      <div class="mt-4 empty:hidden">
+        <slot />
+      </div>
+    </div>
+  </div>
+</div>

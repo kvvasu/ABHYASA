@@ -1,0 +1,31 @@
+---
+interface Item {
+  question: string;
+  answer: string;
+  open?: boolean;
+}
+
+interface Props {
+  items: Item[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<div class:list={['divide-y divide-mist-border border-y border-mist-border', className]}>
+  {items.map((item) => (
+    <details class="group" open={item.open}>
+      <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-feature-label font-medium text-editorial-ink hover:text-charcoal [&::-webkit-details-marker]:hidden">
+        <span>{item.question}</span>
+        <span
+          aria-hidden="true"
+          class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-mist-border text-body transition-transform duration-200 group-open:rotate-45"
+        >
+          +
+        </span>
+      </summary>
+      <p class="max-w-3xl pb-6 text-body text-graphite-copy">{item.answer}</p>
+    </details>
+  ))}
+</div>

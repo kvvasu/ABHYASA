@@ -1,0 +1,52 @@
+---
+interface Props {
+  variant?: 'primary' | 'secondary' | 'ghost' | 'cyan';
+  size?: 'sm' | 'md' | 'lg';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  type = 'button',
+  disabled = false,
+  class: className,
+} = Astro.props;
+
+const variants = {
+  primary:
+    'bg-charcoal text-paper-white border border-charcoal hover:bg-editorial-ink hover:border-editorial-ink',
+  secondary:
+    'bg-paper-white text-editorial-ink border border-ash-copy hover:border-charcoal hover:bg-air-wash',
+  ghost:
+    'bg-transparent text-editorial-ink border border-transparent hover:bg-air-wash hover:border-mist-border',
+  cyan: 'bg-cyan-halo text-charcoal border border-prism-cyan hover:bg-sky-fade',
+};
+
+const sizes = {
+  sm: 'min-h-9 px-4 text-caption',
+  md: 'min-h-11 px-5 text-label',
+  lg: 'min-h-13 px-7 text-body',
+};
+
+const base =
+  'inline-flex items-center justify-center gap-2 rounded-[12px] font-medium transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-charcoal disabled:pointer-events-none disabled:opacity-45 aria-disabled:pointer-events-none aria-disabled:opacity-45';
+
+const classes = [base, variants[variant], sizes[size], className];
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  class:list={classes}
+  href={href}
+  type={href ? undefined : type}
+  disabled={href ? undefined : disabled}
+  aria-disabled={href && disabled ? 'true' : undefined}
+  tabindex={href && disabled ? '-1' : undefined}
+>
+  <slot />
+</Tag>

@@ -1,0 +1,76 @@
+---
+interface Props {
+  id: string;
+  label: string;
+  name?: string;
+  placeholder?: string;
+  hint?: string;
+  error?: string;
+  required?: boolean;
+  disabled?: boolean;
+  rows?: number;
+  value?: string;
+  class?: string;
+}
+
+const {
+  id,
+  label,
+  name,
+  placeholder,
+  hint,
+  error,
+  required = false,
+  disabled = false,
+  rows = 4,
+  value,
+  class: className,
+} = Astro.props;
+
+const hintId = hint ? `${id}-hint` : undefined;
+const errorId = error ? `${id}-error` : undefined;
+const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+---
+
+<div class:list={['w-full', className]}>
+  <label for={id} class="mb-2 block text-label font-medium text-editorial-ink">
+    {label}
+    {required && (
+      <span class="ml-1 text-alert-ink" aria-hidden="true">
+        *
+      </span>
+    )}
+    {required && <span class="sr-only">(required)</span>}
+  </label>
+
+  <textarea
+    id={id}
+    name={name}
+    placeholder={placeholder}
+    required={required}
+    disabled={disabled}
+    rows={rows}
+    aria-invalid={error ? 'true' : undefined}
+    aria-describedby={describedBy}
+    class:list={[
+      'w-full resize-y rounded-[12px] border bg-paper-white px-4 py-3 text-body text-editorial-ink transition-colors placeholder:text-graphite-copy/80 focus:border-charcoal focus:ring-2 focus:ring-cyan-halo focus:outline-none disabled:cursor-not-allowed disabled:bg-air-wash disabled:text-ash-copy',
+      error ? 'border-alert-ink' : 'border-ash-copy',
+    ]}
+  >{value}</textarea>
+
+  {hint && (
+    <p id={hintId} class="mt-2 text-caption text-graphite-copy">
+      {hint}
+    </p>
+  )}
+  {error && (
+    <p
+      id={errorId}
+      role="alert"
+      class="mt-2 flex items-start gap-1.5 text-caption font-medium text-alert-ink"
+    >
+      <span aria-hidden="true">!</span>
+      <span>{error}</span>
+    </p>
+  )}
+</div>

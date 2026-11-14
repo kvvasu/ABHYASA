@@ -52,3 +52,8 @@ Cloudflare secrets are set with `npx wrangler pages secret put <NAME>`.
 ## Repository
 
 https://github.com/kvvasu/ABHYASA
+
+## Design preview
+
+Run `npm run preview` and open `/design`. The page is `noindex` and is for review
+only.

@@ -1,0 +1,25 @@
+---
+interface Props {
+  tone?: 'neutral' | 'cyan' | 'ink' | 'success';
+  class?: string;
+}
+
+const { tone = 'neutral', class: className } = Astro.props;
+
+const tones = {
+  neutral: 'bg-air-wash text-graphite-copy border-mist-border',
+  cyan: 'bg-cyan-halo text-charcoal border-prism-cyan',
+  ink: 'bg-charcoal text-paper-white border-charcoal',
+  success: 'bg-paper-white text-success-ink border-success-ink',
+};
+
+const classes = [
+  'inline-flex items-center gap-1.5 rounded-[9999px] border px-3 py-1 text-utility font-medium uppercase',
+  tones[tone],
+  className,
+];
+---
+
+<span class:list={classes}>
+  <slot />
+</span>

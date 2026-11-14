@@ -1,0 +1,82 @@
+---
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  id: string;
+  label: string;
+  options: Option[];
+  name?: string;
+  hint?: string;
+  error?: string;
+  required?: boolean;
+  disabled?: boolean;
+  placeholder?: string;
+  class?: string;
+}
+
+const {
+  id,
+  label,
+  options,
+  name,
+  hint,
+  error,
+  required = false,
+  disabled = false,
+  placeholder,
+  class: className,
+} = Astro.props;
+
+const hintId = hint ? `${id}-hint` : undefined;
+const errorId = error ? `${id}-error` : undefined;
+const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
+---
+
+<div class:list={['w-full', className]}>
+  <label for={id} class="mb-2 block text-label font-medium text-editorial-ink">
+    {label}
+    {required && (
+      <span class="ml-1 text-alert-ink" aria-hidden="true">
+        *
+      </span>
+    )}
+    {required && <span class="sr-only">(required)</span>}
+  </label>
+
+  <select
+    id={id}
+    name={name}
+    required={required}
+    disabled={disabled}
+    aria-invalid={error ? 'true' : undefined}
+    aria-describedby={describedBy}
+    class:list={[
+      'h-12 w-full rounded-[12px] border bg-paper-white px-4 text-body text-editorial-ink transition-colors focus:border-charcoal focus:ring-2 focus:ring-cyan-halo focus:outline-none disabled:cursor-not-allowed disabled:bg-air-wash disabled:text-ash-copy',
+      error ? 'border-alert-ink' : 'border-ash-copy',
+    ]}
+  >
+    {placeholder && <option value="">{placeholder}</option>}
+    {options.map((option) => (
+      <option value={option.value}>{option.label}</option>
+    ))}
+  </select>
+
+  {hint && (
+    <p id={hintId} class="mt-2 text-caption text-graphite-copy">
+      {hint}
+    </p>
+  )}
+  {error && (
+    <p
+      id={errorId}
+      role="alert"
+      class="mt-2 flex items-start gap-1.5 text-caption font-medium text-alert-ink"
+    >
+      <span aria-hidden="true">!</span>
+      <span>{error}</span>
+    </p>
+  )}
+</div>

@@ -1,0 +1,34 @@
+---
+interface Props {
+  label?: string;
+  rows?: number;
+  class?: string;
+}
+
+const { label = 'Loading', rows = 3, class: className } = Astro.props;
+---
+
+<div
+  class:list={['rounded-[12px] border border-mist-border bg-paper-white p-6 sm:p-8', className]}
+  role="status"
+  aria-live="polite"
+  aria-busy="true"
+>
+  <div class="flex items-center gap-3">
+    <span
+      aria-hidden="true"
+      class="h-5 w-5 animate-spin rounded-full border-2 border-mist-border border-t-charcoal"
+    ></span>
+    <span class="text-label font-medium text-editorial-ink">{label}</span>
+  </div>
+  <div class="mt-6 space-y-3" aria-hidden="true">
+    {Array.from({ length: rows }).map((_, index) => (
+      <div
+        class:list={[
+          'h-3 animate-pulse rounded-[9999px] bg-mist-border',
+          index === rows - 1 ? 'w-2/3' : 'w-full',
+        ]}
+      />
+    ))}
+  </div>
+</div>
