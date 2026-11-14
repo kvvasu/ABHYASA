@@ -121,8 +121,44 @@ layered controls:
 - Motion is reduced when `prefers-reduced-motion` is set.
 - Status messages use text and icons, not color alone.
 
-## Known gap
+## Differences from the reference
 
-The Captions Light design reference file was not available in the workspace. The
-implementation follows the supplied tokens and component rules. Review `/design`
-for visual approval before Phase 3.
+The Captions Light reference file and licensed font files were not available. The
+build follows the supplied tokens and component rules. These differences are
+recorded for approval:
+
+1. Headings use Libre Baskerville instead of Exposure. Body text uses Inter instead
+   of DenimINK. Both substitutes are open licensed.
+2. Two functional colors are added: Alert Ink `#a3342a` and Success Ink `#1e6b4a`.
+   The supplied brand palette is unchanged. Error and success states need
+   accessible contrast that the brand palette cannot provide for small text.
+3. Input borders use Ash Copy `#7e8486` instead of Steel Inset `#d0d6d7`. Steel
+   Inset is 1.47:1 on white and fails the 3:1 non-text contrast requirement. Ash
+   Copy is 3.80:1.
+4. Ash Copy is used only for disabled text. Prism Cyan is used only for accents and
+   the focus halo. Both fail AA for normal body text on white.
+5. Buttons add a `cyan` variant for learning controls. Primary, secondary, and
+   ghost variants follow the supplied rules.
+6. The mobile navigation uses a native `details` disclosure instead of a
+   JavaScript drawer. This keeps keyboard and screen reader behavior simple.
+7. Grain is limited to one feature panel. It is not used behind body text.
+8. The navigation is sticky with a 16px top offset, not fixed to the viewport
+   edge. This preserves the floating appearance and avoids covering anchors.
+9. The type scale uses `clamp()` so mobile sizes stay readable. The desktop sizes
+   match the supplied table.
+
+## Review checklist (Phase 2)
+
+| Check                                    | Result                              |
+| ---------------------------------------- | ----------------------------------- |
+| All 11 supplied color tokens present     | Pass. Two functional colors added.  |
+| All 9 typography roles present           | Pass.                               |
+| Radius rules: 12, 20, 30, 40, 9999px     | Pass.                               |
+| Thin borders over large shadows          | Pass. One navigation shadow.        |
+| Translucent floating navigation          | Pass.                               |
+| Mobile navigation works with keyboard    | Pass. Playwright test.              |
+| Form controls have labels, hints, errors | Pass.                               |
+| Responsive typography on mobile          | Pass. `clamp()` tokens.             |
+| WCAG AA body text contrast               | Pass. Graphite on white 9.52:1.     |
+| Focus visible on all controls            | Pass. Charcoal outline with offset. |
+| Production build                         | Pass.                               |
