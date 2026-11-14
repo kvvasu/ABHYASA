@@ -41,23 +41,38 @@ Cloudflare Pages
 
 Checked against the npm registry on 2026-11-14.
 
-| Component | Selected version | Finding |
-|---|---|---|
-| Astro | 7.4.12 | Requires Node >= 22.23.4. Development machine has Node 24.19.0. Compatible. |
-| @astrojs/cloudflare | 14.4.8 | Peer dependencies: astro ^7.4.0, wrangler ^4.125.0. Compatible. |
-| Tailwind CSS | 4.3.5 | Use `@tailwindcss/vite` 4.3.5. Compatible with Astro 7 through Vite. |
-| Cloudflare Wrangler | 4.162.0 | Compatible with adapter peer range. |
-| Firebase JS SDK | 13.3.0 | Browser SDK only. Used for login and ID tokens. |
-| `jose` | 6.2.17 | Web Crypto build. Used to verify Firebase ID tokens and to sign Google service-account JWTs. |
-| Plyr | 3.8.5 | Browser library. No runtime conflict. |
-| Decap CMS | 3.17.3 | Peer dependencies: React 19, React DOM 19. Needs a bundling step or the CDN build. |
-| Vitest | 5.1.0 | Node test runner. |
-| Playwright | 1.65.1 | Browser tests. |
+| Component                  | Selected version           | Finding                                                                                        |
+| -------------------------- | -------------------------- | ---------------------------------------------------------------------------------------------- |
+| Astro                      | 7.4.12                     | Requires Node >= 22.23.4. Development machine has Node 24.19.0. Compatible.                    |
+| Cloudflare Pages Functions | Native `functions/` folder | Astro's Cloudflare adapter v13+ removed Pages support. Use static Astro plus native Functions. |
+| Tailwind CSS               | 4.3.5                      | Use `@tailwindcss/vite` 4.3.5. Compatible with Astro 7 through Vite.                           |
+| Cloudflare Wrangler        | 4.162.0                    | Runs `wrangler pages dev ./dist` locally.                                                      |
+| Firebase JS SDK            | 13.3.0                     | Browser SDK only. Used for login and ID tokens.                                                |
+| `jose`                     | 6.2.17                     | Web Crypto build. Used to verify Firebase ID tokens and to sign Google service-account JWTs.   |
+| Plyr                       | 3.8.5                      | Browser library. No runtime conflict.                                                          |
+| Decap CMS                  | 3.17.3                     | Peer dependencies: React 19, React DOM 19. Needs a bundling step or the CDN build.             |
+| Vitest                     | 5.1.0                      | Node test runner.                                                                              |
+| Playwright                 | 1.65.1                     | Browser tests.                                                                                 |
 
 ### Important incompatibility
 
-`firebase-admin` does not run on Cloudflare Workers. It depends on Node.js
-runtime modules and gRPC. Do not add it to the worker bundle.
+Astro's official Cloudflare adapter no longer supports Cloudflare Pages. Version
+13 and later target Workers only. The required hosting is Cloudflare Pages with
+Pages Functions.
+
+Resolution, applied in Phase 1:
+
+1. Build Astro as a static site. Do not use `@astrojs/cloudflare`.
+2. Put server code in the native `functions/` directory as Pages Functions.
+3. Preview the full site with `wrangler pages dev ./dist`.
+4. Keep all API paths under `/api/*`.
+
+This preserves the required stack. It removes Astro API routes as the server
+mechanism. Handlers use the Pages Functions signature (`onRequestGet`,
+`onRequestPost`, and so on).
+
+`firebase-admin` is also rejected. It needs Node.js modules and gRPC that the
+Workers runtime does not provide.
 
 Replacement, already decided:
 
@@ -93,15 +108,15 @@ before the instructor relies on it.
 
 ## 5. Trust boundaries
 
-| Boundary | Rule |
-|---|---|
-| Browser -> API | The browser is untrusted. Send the Firebase ID token in the `Authorization: Bearer` header. |
-| API -> Firebase | Verify signature, issuer, audience, expiry, and subject. Read the UID from the verified token only. |
-| API -> Firestore | Use a service account with least privilege. Never expose service credentials to the browser. |
-| API -> Razorpay | Read the amount from Firestore. Ignore browser-supplied price. Activate access only after a signed webhook event is verified. |
-| Razorpay -> webhook | Verify HMAC signature over the raw request body. Reject invalid signatures. Process each event ID once. |
-| Public build -> paid data | Paid YouTube IDs, paid R2 keys, and paid file URLs never enter Git, static HTML, JSON, JS bundles, or source maps. |
-| Firestore client SDK | Deny client writes to commercial and access-control collections. Writes go through the API. |
+| Boundary                  | Rule                                                                                                                          |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Browser -> API            | The browser is untrusted. Send the Firebase ID token in the `Authorization: Bearer` header.                                   |
+| API -> Firebase           | Verify signature, issuer, audience, expiry, and subject. Read the UID from the verified token only.                           |
+| API -> Firestore          | Use a service account with least privilege. Never expose service credentials to the browser.                                  |
+| API -> Razorpay           | Read the amount from Firestore. Ignore browser-supplied price. Activate access only after a signed webhook event is verified. |
+| Razorpay -> webhook       | Verify HMAC signature over the raw request body. Reject invalid signatures. Process each event ID once.                       |
+| Public build -> paid data | Paid YouTube IDs, paid R2 keys, and paid file URLs never enter Git, static HTML, JSON, JS bundles, or source maps.            |
+| Firestore client SDK      | Deny client writes to commercial and access-control collections. Writes go through the API.                                   |
 
 ## 6. Data flow: purchase
 
@@ -148,30 +163,30 @@ by an authorized user, screen recording, or download. Do not claim otherwise.
 
 ## 9. Environments
 
-| Environment | Cloudflare project | Firebase project | Razorpay |
-|---|---|---|---|
-| Local | `wrangler pages dev` | dev project | test mode |
-| Preview | Pages preview deployment | dev project | test mode |
-| Production | Pages production | production project | live mode, only after approval |
+| Environment | Cloudflare project       | Firebase project   | Razorpay                       |
+| ----------- | ------------------------ | ------------------ | ------------------------------ |
+| Local       | `wrangler pages dev`     | dev project        | test mode                      |
+| Preview     | Pages preview deployment | dev project        | test mode                      |
+| Production  | Pages production         | production project | live mode, only after approval |
 
 ## 10. Secrets
 
-| Name | Where | Public? |
-|---|---|---|
-| `FIREBASE_PROJECT_ID` | Pages env | No |
-| `FIREBASE_CLIENT_EMAIL` | Pages env | No |
-| `FIREBASE_PRIVATE_KEY` | Pages secret | No |
-| `RAZORPAY_KEY_ID` | Pages env (also sent to browser, public by design) | Yes |
-| `RAZORPAY_KEY_SECRET` | Pages secret | No |
-| `RAZORPAY_WEBHOOK_SECRET` | Pages secret | No |
-| `GITHUB_OAUTH_CLIENT_ID` | Pages env | Yes |
-| `GITHUB_OAUTH_CLIENT_SECRET` | Pages secret | No |
-| `OAUTH_STATE_SECRET` | Pages secret | No |
-| `PUBLIC_FIREBASE_API_KEY` | Build env (public by design) | Yes |
-| `PUBLIC_FIREBASE_AUTH_DOMAIN` | Build env | Yes |
-| `PUBLIC_FIREBASE_PROJECT_ID` | Build env | Yes |
-| `PUBLIC_RAZORPAY_KEY_ID` | Build env | Yes |
-| `R2_*` binding | Pages binding (when enabled) | No |
+| Name                          | Where                                              | Public? |
+| ----------------------------- | -------------------------------------------------- | ------- |
+| `FIREBASE_PROJECT_ID`         | Pages env                                          | No      |
+| `FIREBASE_CLIENT_EMAIL`       | Pages env                                          | No      |
+| `FIREBASE_PRIVATE_KEY`        | Pages secret                                       | No      |
+| `RAZORPAY_KEY_ID`             | Pages env (also sent to browser, public by design) | Yes     |
+| `RAZORPAY_KEY_SECRET`         | Pages secret                                       | No      |
+| `RAZORPAY_WEBHOOK_SECRET`     | Pages secret                                       | No      |
+| `GITHUB_OAUTH_CLIENT_ID`      | Pages env                                          | Yes     |
+| `GITHUB_OAUTH_CLIENT_SECRET`  | Pages secret                                       | No      |
+| `OAUTH_STATE_SECRET`          | Pages secret                                       | No      |
+| `PUBLIC_FIREBASE_API_KEY`     | Build env (public by design)                       | Yes     |
+| `PUBLIC_FIREBASE_AUTH_DOMAIN` | Build env                                          | Yes     |
+| `PUBLIC_FIREBASE_PROJECT_ID`  | Build env                                          | Yes     |
+| `PUBLIC_RAZORPAY_KEY_ID`      | Build env                                          | Yes     |
+| `R2_*` binding                | Pages binding (when enabled)                       | No      |
 
 `.env` files are ignored. `.env.example` contains names only, never values.
 

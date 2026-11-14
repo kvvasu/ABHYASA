@@ -156,9 +156,7 @@ preview.
     "title": "Course Introduction",
     "youtubeVideoId": "PRIVATE_ID",
     "durationSeconds": 540,
-    "resources": [
-      { "id": "r1", "name": "Worksheet", "type": "link", "url": "https://..." }
-    ]
+    "resources": [{ "id": "r1", "name": "Worksheet", "type": "link", "url": "https://..." }]
   }
 }
 ```
@@ -202,20 +200,20 @@ timestamps. Response is the stored record.
 All instructor routes require a verified token and `users/{uid}.role` of
 `instructor` or `admin`. Instructor routes record an audit log entry.
 
-| Method | Path | Purpose |
-|---|---|---|
-| GET | `/api/instructor/courses` | List all courses, including drafts. |
-| POST | `/api/instructor/courses` | Create a course. |
-| PATCH | `/api/instructor/courses/:courseId` | Update course fields, modules, or status. |
-| GET | `/api/instructor/courses/:courseId/lessons` | List lessons with private fields. |
-| POST | `/api/instructor/courses/:courseId/lessons` | Create a lesson. |
-| PATCH | `/api/instructor/lessons/:lessonId` | Update title, order, video ID, resources, or status. |
-| DELETE | `/api/instructor/lessons/:lessonId` | Soft delete. Set status to `draft`. |
-| GET | `/api/instructor/enrollments` | List enrollments, optional course filter. |
-| POST | `/api/instructor/enrollments` | Grant access manually. Requires confirmation and audit. |
-| PATCH | `/api/instructor/enrollments/:enrollmentId` | Revoke access. |
-| GET | `/api/instructor/orders` | List orders and payment states. |
-| GET | `/api/instructor/audit-logs` | Recent audit entries. |
+| Method | Path                                        | Purpose                                                 |
+| ------ | ------------------------------------------- | ------------------------------------------------------- |
+| GET    | `/api/instructor/courses`                   | List all courses, including drafts.                     |
+| POST   | `/api/instructor/courses`                   | Create a course.                                        |
+| PATCH  | `/api/instructor/courses/:courseId`         | Update course fields, modules, or status.               |
+| GET    | `/api/instructor/courses/:courseId/lessons` | List lessons with private fields.                       |
+| POST   | `/api/instructor/courses/:courseId/lessons` | Create a lesson.                                        |
+| PATCH  | `/api/instructor/lessons/:lessonId`         | Update title, order, video ID, resources, or status.    |
+| DELETE | `/api/instructor/lessons/:lessonId`         | Soft delete. Set status to `draft`.                     |
+| GET    | `/api/instructor/enrollments`               | List enrollments, optional course filter.               |
+| POST   | `/api/instructor/enrollments`               | Grant access manually. Requires confirmation and audit. |
+| PATCH  | `/api/instructor/enrollments/:enrollmentId` | Revoke access.                                          |
+| GET    | `/api/instructor/orders`                    | List orders and payment states.                         |
+| GET    | `/api/instructor/audit-logs`                | Recent audit entries.                                   |
 
 Grant request:
 
@@ -257,24 +255,24 @@ Verification steps for `payment.captured`:
 
 ## Decap OAuth
 
-| Method | Path | Purpose |
-|---|---|---|
-| GET | `/api/auth/github` | Start GitHub OAuth with signed state. |
-| GET | `/api/auth/callback` | Exchange code, return token to Decap popup. |
+| Method | Path                 | Purpose                                     |
+| ------ | -------------------- | ------------------------------------------- |
+| GET    | `/api/auth/github`   | Start GitHub OAuth with signed state.       |
+| GET    | `/api/auth/callback` | Exchange code, return token to Decap popup. |
 
 No secret is returned to third-party pages.
 
 ## Common failure behavior
 
-| Condition | HTTP | Error code |
-|---|---|---|
-| Missing or malformed token | 401 | `unauthenticated` |
-| Invalid, expired, or wrong-audience token | 401 | `invalid_token` |
-| No active enrollment | 403 | `enrollment_required` |
-| Lesson or course unpublished | 404 | `not_found` |
-| Order belongs to another user | 404 | `not_found` |
-| Invalid webhook signature | 400 | `invalid_signature` |
-| Duplicate webhook event | 200 | processed as no-op |
-| Firestore unavailable | 503 | `dependency_unavailable` |
+| Condition                                 | HTTP | Error code               |
+| ----------------------------------------- | ---- | ------------------------ |
+| Missing or malformed token                | 401  | `unauthenticated`        |
+| Invalid, expired, or wrong-audience token | 401  | `invalid_token`          |
+| No active enrollment                      | 403  | `enrollment_required`    |
+| Lesson or course unpublished              | 404  | `not_found`              |
+| Order belongs to another user             | 404  | `not_found`              |
+| Invalid webhook signature                 | 400  | `invalid_signature`      |
+| Duplicate webhook event                   | 200  | processed as no-op       |
+| Firestore unavailable                     | 503  | `dependency_unavailable` |
 
 Do not return a private video ID or private resource key in any error response.

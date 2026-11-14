@@ -1,0 +1,50 @@
+@import 'tailwindcss';
+@import '@fontsource/libre-baskerville/400.css';
+@import '@fontsource-variable/inter';
+
+@theme {
+  --font-display: 'Libre Baskerville', Georgia, serif;
+  --font-sans: 'Inter Variable', Inter, Arial, sans-serif;
+
+  --color-paper-white: #ffffff;
+  --color-air-wash: #effbff;
+  --color-mist-border: #e8eff2;
+  --color-steel-inset: #d0d6d7;
+  --color-ash-copy: #7e8486;
+  --color-graphite-copy: #434647;
+  --color-editorial-ink: #2a2c2d;
+  --color-charcoal: #1d1f20;
+  --color-prism-cyan: #00d0ff;
+  --color-sky-fade: #a6ecff;
+  --color-cyan-halo: #ccf6ff;
+
+  --radius-card: 12px;
+  --radius-media: 20px;
+  --radius-feature: 40px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100vh;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-charcoal);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

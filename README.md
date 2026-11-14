@@ -2,15 +2,16 @@
 
 Learning Management System (LMS) for ServiceNow training courses.
 
-Status: Phase 0 (Discovery and Architecture). No application code yet.
+Status: Phase 1 (Project Foundation). Application code is early. Public pages are
+placeholders until Phase 3.
 
 ## Stack
 
 - Astro 7 + TypeScript
 - Tailwind CSS v4
-- Cloudflare Pages + Pages Functions
+- Cloudflare Pages + native Pages Functions (`functions/`)
 - Firebase Authentication
-- Cloud Firestore
+- Cloud Firestore (REST API from Functions)
 - Razorpay Orders, Checkout, Webhooks
 - YouTube Unlisted + Plyr
 - Decap CMS (Markdown content)
@@ -24,7 +25,29 @@ and [docs/DECISIONS.md](docs/DECISIONS.md).
 
 ## Local development
 
-Not available until Phase 1.
+```bash
+npm install
+npm run dev          # Astro pages only, port 4321
+npm run build        # type check and static build
+npm run preview      # full site with Pages Functions, port 8788
+```
+
+Use `npm run preview` when testing `/api/*`. `astro dev` does not run Pages
+Functions.
+
+## Tests
+
+```bash
+npm test             # Vitest unit tests
+npm run test:e2e     # Playwright against a built site with Functions
+npm run lint
+npm run format:check
+```
+
+## Environment
+
+Copy `.env.example` to `.env` for local values. Never commit real secrets.
+Cloudflare secrets are set with `npx wrangler pages secret put <NAME>`.
 
 ## Repository
 

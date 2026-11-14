@@ -1,42 +1,55 @@
 # Project Status
 
-Current Phase: Phase 0 — Discovery and Architecture
-Current Branch: `feature/phase-00-discovery`
+Current Phase: Phase 1 — Project Foundation (awaiting approval)
+Current Branch: `feature/phase-01-foundation`
 Last Commit: see `git log -1` on this branch
 Last Updated: 2026-11-14
 
 ## Completed
-- Inspected workspace. No existing project files.
-- Found GitHub repository `kvvasu/ABHYASA` (public) with description "ABHYASA is a modern online education platform...". Repository is empty.
-- Checked npm versions and peer dependency compatibility for Astro 7, Cloudflare adapter, Tailwind CSS 4, Vitest, Playwright, Plyr, Decap CMS, `jose`.
-- Confirmed `firebase-admin` is not compatible with Cloudflare Workers. Selected `jose` + Firestore REST.
-- Defined database schema, API contract, trust boundaries, and secrets list.
-- Wrote architecture, roadmap, schema, API, and decision documents.
+
+- Phase 0 approved. PR #1 merged into `develop`.
+- Phase 0 decisions recorded: paid PDFs deferred; Libre Baskerville and Inter approved as free font substitutes.
+- Astro 7 static project created with TypeScript.
+- Tailwind CSS v4 configured with Captions Light tokens.
+- Base layout and placeholder home page created.
+- Native Cloudflare Pages Function `GET /api/health` created.
+- Vitest, Playwright, ESLint, Prettier, and EditorConfig configured.
+- Cloudflare Pages configuration and `.env.example` added.
+- Unit and browser tests pass. Production build passes.
 
 ## In Progress
-- Phase 0 review by project owner.
+
+- Phase 1 review by project owner.
 
 ## Blocked
-- None for Phase 0.
-- Phase 1 needs no external account.
-- Phases 4, 5, 6, 7 need Firebase, GitHub OAuth, Razorpay test, and Cloudflare access.
+
+- Cloudflare Pages project creation and deployment need account access.
+- Phase 4 needs a GitHub OAuth App.
+- Phase 5 needs a Firebase project and web app configuration.
+- Phase 6 needs a Firebase service account.
+- Phase 7 needs Razorpay test keys and a webhook secret.
 
 ## Test Status
-- Unit tests: not applicable (documentation phase).
-- Integration tests: not applicable.
-- Browser tests: not applicable.
-- Build: not applicable. No application code yet.
+
+- Unit tests: Pass. 1 file, 1 test.
+- Integration tests: Pass for health endpoint through `wrangler pages dev`.
+- Browser tests: Pass. 2 Playwright tests (Chromium).
+- Build: Pass. `astro check` reports 0 errors.
+- Lint and format: Pass.
 
 ## Known Issues
-- Licensed Exposure and DenimINK font files are not available. Phase 2 will use Libre Baskerville and Inter from Fontsource (decision ADR-013, approved).
-- Repository default branch was unset for the empty repository. This phase created `main`, `develop`, and the phase branch.
-- Razorpay, Firebase, Cloudflare, and GitHub OAuth credentials are not yet available.
-- Paid PDFs and R2 are out of MVP scope (decision ADR-011, approved).
+
+- Astro's official Cloudflare adapter no longer supports Cloudflare Pages. Architecture corrected in Phase 1: static Astro build plus native `functions/` Pages Functions. Required stack preserved.
+- `astro dev` does not serve Pages Functions. Use `npm run preview` for `/api/*`.
+- Home page is a Phase 1 placeholder. Real design is Phase 2.
+- Cloudflare Pages deployment is not tested because account access is not available.
 
 ## Next Action
-- Owner reviews Phase 0 documents and approves the architecture.
-- After approval, start Phase 1 on `feature/phase-01-foundation`.
+
+- Owner reviews Phase 1, then Phase 2 — Design System starts after approval.
 
 ## Approval Required
-- Yes. Approve Phase 0.
-- Confirm: Firebase project, Cloudflare account, Razorpay test account, GitHub OAuth app, and whether paid PDFs are in the MVP.
+
+- Yes. Approve Phase 1.
+- Confirm the Phase 1 architecture correction (static Astro + native Pages Functions).
+- Provide Cloudflare account access before deployment testing.
