@@ -1,13 +1,14 @@
 # Project Status
 
-Current Phase: Phase 3 — Public Website (awaiting approval)
-Current Branch: `feature/phase-03-public-pages`
-Last Commit: see `git log -1` on this branch
+Current Phase: Phase 3 approved. Phase 4 — Content Management in progress.
+Current Branch: `develop`
+Last Commit: see `git log -1` on `develop`
 Last Updated: 2026-11-14
 
 ## Completed
 
 - Phase 0, Phase 1, and Phase 2 approved. PR #2 and PR #3 merged into `develop`.
+- Phase 3 approved. PR #4 merged into `develop` (`cceeb99`).
 - Full Captions Light color, typography, spacing, radius, and shadow tokens.
 - Responsive display sizes with `clamp()`.
 - Libre Baskerville 400/700 and Inter variable fonts, self-hosted.
@@ -22,7 +23,8 @@ Last Updated: 2026-11-14
 
 ## In Progress
 
-- Phase 3 review by project owner.
+- Phase 4 — Content Management: content collections, Markdown courses, Decap CMS,
+  and the selected GitHub OAuth method.
 
 ## Blocked
 
@@ -53,9 +55,9 @@ Last Updated: 2026-11-14
 
 ## Next Action
 
-- Owner reviews the public pages, then Phase 4 — Authentication starts after approval.
+- Complete Phase 4 and open a pull request for approval.
 
 ## Approval Required
 
-- Yes. Approve Phase 3.
-- Confirm the sample course content, legal drafts, and public navigation behavior.
+- No for Phase 3. Approved and merged.
+- Phase 4 requires approval before merge.
