@@ -1,0 +1,73 @@
+# Decap CMS configuration.
+# Public content only. Never add private video IDs, paid file keys, prices read at
+# checkout, or student data to this repository. See docs/CMS.md.
+
+backend:
+  name: github
+  repo: kvvasu/ABHYASA
+  branch: develop
+  base_url: https://servicenow-learn-easy.pages.dev
+  auth_endpoint: /api/auth/github
+  site_domain: https://servicenow-learn-easy.pages.dev
+
+# Each save creates a pull request instead of writing to develop directly.
+publish_mode: editorial_workflow
+
+collections:
+  - name: courses
+    label: Courses
+    label_singular: Course
+    folder: src/content/courses
+    create: true
+    extension: md
+    format: frontmatter
+    slug: '{{slug}}'
+    summary: '{{title}}'
+    sortable_fields: [order, title, updated]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Summary, name: summary, widget: text }
+      - { label: Description, name: description, widget: text }
+      - label: Level
+        name: level
+        widget: select
+        options: [Beginner, Intermediate, Advanced]
+      - label: Duration
+        name: duration
+        widget: string
+        hint: 'Display text only. Example: 6h 20m.'
+      - label: Sample price (paise)
+        name: pricePaise
+        widget: number
+        value_type: int
+        min: 0
+        hint: 'Placeholder only. Checkout will read the real price from the server.'
+      - { label: Featured, name: featured, widget: boolean, default: false }
+      - { label: Order, name: order, widget: number, value_type: int, default: 0 }
+      - label: Updated
+        name: updated
+        widget: datetime
+        date_format: 'YYYY-MM-DD'
+        time_format: false
+        picker_utc: true
+      - { label: Sample content, name: sample, widget: boolean, default: true }
+      - label: Outcomes
+        name: outcomes
+        widget: list
+        field: { label: Outcome, name: outcome, widget: string }
+      - label: Audience
+        name: audience
+        widget: list
+        field: { label: Audience, name: audience, widget: string }
+      - label: Modules
+        name: modules
+        widget: list
+        fields:
+          - { label: Title, name: title, widget: string }
+          - label: Lessons
+            name: lessons
+            widget: list
+            field: { label: Lesson, name: lesson, widget: string }
+      - label: Overview
+        name: body
+        widget: markdown

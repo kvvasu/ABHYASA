@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 const pages = [
   { path: '/', heading: /Learn ServiceNow by doing the work/ },
-  { path: '/courses', heading: /Five courses/ },
+  { path: '/courses', heading: /courses\. One practical path/ },
   { path: '/courses/servicenow-itsm-fundamentals', heading: /ServiceNow ITSM Fundamentals/ },
   { path: '/about', heading: /Practical teaching/ },
   { path: '/faq', heading: /Answers before you enroll/ },

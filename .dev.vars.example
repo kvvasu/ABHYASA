@@ -1,0 +1,5 @@
+# GitHub OAuth for local Pages Functions.
+# Copy to .dev.vars and fill real values. Never commit .dev.vars.
+GITHUB_OAUTH_CLIENT_ID=
+GITHUB_OAUTH_CLIENT_SECRET=
+OAUTH_STATE_SECRET=
