@@ -146,19 +146,17 @@ Reason: Required stack. Unlisted is access control by obscurity, not DRM.
 Consequence: Authorized users can share links. Do not promise copy protection.
 Do not log video IDs.
 
-## ADR-011: Private PDFs deferred until approved
+## ADR-011: Private PDFs deferred
 
-Status: proposed.
+Status: accepted (owner, 2026-11-14).
 
-Decision: Do not add R2 in Phase 1. Add it in Phase 10 only if paid PDFs are
-required. If added, use private R2 objects and authenticated delivery. Never use
-public bucket URLs.
+Decision: Do not add R2 in the MVP. Paid PDFs are out of scope. Lesson resources
+are external links or public files only.
 
-Reason: Cost control and YAGNI. R2 free tier is sufficient, but it adds a binding,
-signed URL logic, and tests.
+Reason: Cost control and YAGNI. Owner confirmed that paid PDFs are deferred.
 
-Consequence: Lesson resources in the MVP are external links or public files.
-Paid files are a separate approved scope.
+Consequence: No R2 binding, signed URL logic, or private file tests in the MVP.
+Add R2 only after a new approval. Never use public bucket URLs for paid files.
 
 ## ADR-012: Currency stored as integer paise
 
@@ -171,18 +169,23 @@ Reason: Floating point currency is unsafe. Razorpay accepts integer minor units.
 Consequence: Admin forms accept rupees and convert at the boundary. Validate
 minimum and maximum amounts on the server.
 
-## ADR-013: Design tokens from Captions Light, font fallbacks allowed
+## ADR-013: Design tokens from Captions Light with free font substitutes
 
-Status: proposed.
+Status: accepted (owner, 2026-11-14).
 
-Decision: Use the supplied color tokens exactly. Use Exposure and DenimINK if
-licensed files are supplied by the owner; otherwise use Libre Baskerville or
-Georgia for headings and Inter or Arial for body text.
+Decision: Use the supplied color tokens exactly. Licensed Exposure and DenimINK
+files are not available. Use free, open-licensed substitutes:
 
-Reason: License compliance.
+- Headings: Libre Baskerville (SIL Open Font License), self-hosted with Fontsource.
+- Body: Inter (SIL Open Font License), self-hosted with Fontsource.
 
-Consequence: Phase 2 checks contrast for both font sets. Do not download
-commercial fonts.
+Reason: The owner asked for the closest free match. Both fonts are free for
+commercial use and need no external font CDN. Libre Baskerville has the editorial
+serif character of Exposure. Inter is a neutral, highly legible sans for DenimINK.
+
+Consequence: Self-host through `@fontsource` packages. Do not download or
+distribute commercial font files. Phase 2 checks WCAG AA contrast with these
+fonts.
 
 ## ADR-014: No paid service in the MVP
 

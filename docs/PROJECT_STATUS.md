@@ -28,9 +28,10 @@ Last Updated: 2026-11-14
 - Build: not applicable. No application code yet.
 
 ## Known Issues
-- The Captions Light design reference and licensed font files were not found in the workspace. Only the color tokens from the prompt are available. Phase 2 will use documented font fallbacks unless the owner supplies files.
-- Repository default branch is unset because the repository is empty. This phase creates `main`, `develop`, and the phase branch.
+- Licensed Exposure and DenimINK font files are not available. Phase 2 will use Libre Baskerville and Inter from Fontsource (decision ADR-013, approved).
+- Repository default branch was unset for the empty repository. This phase created `main`, `develop`, and the phase branch.
 - Razorpay, Firebase, Cloudflare, and GitHub OAuth credentials are not yet available.
+- Paid PDFs and R2 are out of MVP scope (decision ADR-011, approved).
 
 ## Next Action
 - Owner reviews Phase 0 documents and approves the architecture.

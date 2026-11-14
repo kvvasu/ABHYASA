@@ -1,6 +1,6 @@
 # Phase 00 — Discovery and Architecture
 
-Status: Awaiting approval.
+Status: Approved (2026-11-14).
 Date: 2026-11-14.
 
 ## Goal
@@ -83,8 +83,8 @@ Confirm the implementation plan before writing application code.
 | Razorpay webhook secret | Phase 7 | Not provided |
 | GitHub OAuth App for Decap | Phase 4 | Not provided |
 | Domain name | Phase 12 | Optional |
-| Licensed Exposure and DenimINK fonts | Phase 2 | Not provided |
-| Decision: paid PDFs in MVP? | Phase 10 | Not decided |
+| Licensed Exposure and DenimINK fonts | Phase 2 | Not available. Free substitutes approved: Libre Baskerville + Inter. |
+| Decision: paid PDFs in MVP? | Phase 10 | Deferred. R2 out of MVP scope. |
 | Decision: public repository with private video IDs in Firestore only? | Phase 6 | Architecture assumes yes |
 
 ## Acceptance review
