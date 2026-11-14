@@ -1,30 +1,210 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import PublicLayout from '../layouts/PublicLayout.astro';
+import Accordion from '../components/ui/Accordion.astro';
+import Badge from '../components/ui/Badge.astro';
 import Button from '../components/ui/Button.astro';
-import Nav from '../components/ui/Nav.astro';
+import Card from '../components/ui/Card.astro';
+import Section from '../components/ui/Section.astro';
+import CourseCard from '../components/CourseCard.astro';
+import { courses, SAMPLE_CONTENT_NOTE } from '../data/courses';
+
+const featured = courses.filter((course) => course.featured).slice(0, 3);
+
+const faqItems = [
+  {
+    question: 'Are the courses self-paced?',
+    answer:
+      'Yes. Lessons are recorded and available when your enrollment is active. Start, pause, and continue from any device.',
+  },
+  {
+    question: 'Do I need ServiceNow experience?',
+    answer:
+      'The fundamentals course starts with platform navigation. Intermediate courses assume basic platform knowledge or equivalent work experience.',
+  },
+  {
+    question: 'Is payment available now?',
+    answer:
+      'No. Checkout is not active in this preview. The course catalog and prices are sample content for review.',
+    open: true,
+  },
+];
 ---
 
-<BaseLayout title="ServiceNow Learn Easy">
-  <Nav />
-  <main
-    id="main"
-    class="mx-auto flex min-h-[70vh] max-w-6xl flex-col justify-center px-gutter py-section"
+<PublicLayout
+  title="ServiceNow Learn Easy — Practical ServiceNow training"
+  description="Short, practical ServiceNow courses for administrators, analysts, and operations teams. Learn ITSM, ITOM, CMDB, and HRSD by doing the work."
+>
+  <Section
+    size="hero"
+    headingLevel="h1"
+    eyebrow="ServiceNow training"
+    title="Learn ServiceNow by doing the work."
+    description="Short, practical courses for the tasks administrators and operations teams handle every day. Clear examples, focused lessons, and progress that follows you across devices."
   >
-    <p class="text-utility font-medium uppercase text-graphite-copy">ServiceNow Learn Easy</p>
-    <h1 class="font-display mt-6 max-w-3xl text-hero-heading text-balance text-editorial-ink">
-      Practical ServiceNow training, built for working professionals.
-    </h1>
-    <p class="mt-6 max-w-2xl text-body">
-      Course catalog and learning platform are under construction. Phase 2 design system is ready
-      for review.
-    </p>
-    <div class="mt-10 flex flex-wrap gap-3">
-      <Button href="/design" size="lg">
-        View design system
+    <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+      <div>
+        <div class="flex flex-wrap gap-3">
+          <Button href="/courses" size="lg">
+            Browse courses
+          </Button>
+          <Button href="#how-it-works" variant="secondary" size="lg">
+            How it works
+          </Button>
+        </div>
+        <p class="mt-6 max-w-lg text-caption text-graphite-copy">
+          No account is required to review the public catalog. Enrollment and payments are not
+          active in this preview.
+        </p>
+      </div>
+
+      <div class="grain rounded-[40px] border border-mist-border bg-air-wash p-7 sm:p-9">
+        <div class="flex items-center justify-between gap-4">
+          <Badge tone="cyan">Sample learning path</Badge>
+          <p class="text-utility font-medium uppercase text-graphite-copy">Module 2 of 6</p>
+        </div>
+        <p class="font-display mt-6 text-card-heading text-editorial-ink">
+          ServiceNow ITSM Fundamentals
+        </p>
+        <ol class="mt-6 space-y-1">
+          {[
+            'Platform navigation',
+            'Incident lifecycle',
+            'Assignment and routing',
+            'Service level agreements',
+          ].map((item, index) => (
+            <li class="flex items-center justify-between gap-4 border-b border-mist-border py-3 last:border-0">
+              <span class="flex items-center gap-3 text-label">
+                <span
+                  class:list={[
+                    'grid h-7 w-7 shrink-0 place-items-center rounded-full border text-[12px]',
+                    index < 2
+                      ? 'border-charcoal bg-charcoal text-paper-white'
+                      : 'border-ash-copy bg-paper-white text-graphite-copy',
+                  ]}
+                >
+                  {index < 2 ? '✓' : index + 1}
+                </span>
+                {item}
+              </span>
+              <span class="text-caption text-graphite-copy">{index < 2 ? 'Done' : 'Lesson'}</span>
+            </li>
+          ))}
+        </ol>
+        <p class="mt-5 text-caption text-graphite-copy">{SAMPLE_CONTENT_NOTE}</p>
+      </div>
+    </div>
+  </Section>
+
+  <Section
+    tone="wash"
+    eyebrow="Course catalog"
+    title="Start with the work you need to do."
+    description="Five sample courses cover the core ServiceNow administration path. Full curriculum details are on each course page."
+  >
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {featured.map((course) => (
+        <CourseCard course={course} />
+      ))}
+    </div>
+    <div class="mt-8 flex flex-wrap items-center gap-3">
+      <Button href="/courses" variant="secondary">
+        See all 5 courses
       </Button>
-      <Button href="/api/health" variant="secondary" size="lg">
-        Health check
+      <p class="text-caption text-graphite-copy">Sample catalog. Content is not final.</p>
+    </div>
+  </Section>
+
+  <Section
+    eyebrow="What to expect"
+    title="Built for practice, not passive watching."
+    description="Each course stays close to the platform. You see the form, the list, the rule, and the result."
+  >
+    <div class="grid gap-5 md:grid-cols-3">
+      <Card tone="wash">
+        <p class="text-utility font-medium uppercase text-graphite-copy">01</p>
+        <h3 class="mt-4 text-card-heading">Task-led lessons</h3>
+        <p class="mt-3 text-body">
+          Lessons start with a real task, then explain the platform behavior behind it.
+        </p>
+      </Card>
+      <Card>
+        <p class="text-utility font-medium uppercase text-graphite-copy">02</p>
+        <h3 class="mt-4 text-card-heading">Short modules</h3>
+        <p class="mt-3 text-body">
+          Finish one idea at a time. Return to the exact lesson where you stopped.
+        </p>
+      </Card>
+      <Card>
+        <p class="text-utility font-medium uppercase text-graphite-copy">03</p>
+        <h3 class="mt-4 text-card-heading">Visible progress</h3>
+        <p class="mt-3 text-body">
+          Completion is saved to your account and available on another device.
+        </p>
+      </Card>
+    </div>
+  </Section>
+
+  <Section
+    id="how-it-works"
+    tone="wash"
+    eyebrow="How it works"
+    title="Three steps. No clutter."
+    description="The preview shows the public path. Account creation, checkout, and lesson access arrive in later phases."
+  >
+    <ol class="grid gap-5 md:grid-cols-3">
+      <li class="rounded-[12px] border border-mist-border bg-paper-white p-6 sm:p-8">
+        <p class="text-utility font-medium uppercase text-graphite-copy">Step 01</p>
+        <h3 class="mt-4 text-feature-label font-medium">Choose a course</h3>
+        <p class="mt-2 text-body">Read the outline, outcomes, and lesson list before you decide.</p>
+      </li>
+      <li class="rounded-[12px] border border-mist-border bg-paper-white p-6 sm:p-8">
+        <p class="text-utility font-medium uppercase text-graphite-copy">Step 02</p>
+        <h3 class="mt-4 text-feature-label font-medium">Enroll securely</h3>
+        <p class="mt-2 text-body">
+          Account creation and payment are not active in this preview. Access will start only after
+          the server verifies payment.
+        </p>
+      </li>
+      <li class="rounded-[12px] border border-mist-border bg-paper-white p-6 sm:p-8">
+        <p class="text-utility font-medium uppercase text-graphite-copy">Step 03</p>
+        <h3 class="mt-4 text-feature-label font-medium">Learn and continue</h3>
+        <p class="mt-2 text-body">
+          Watch a lesson, mark it complete, and resume from the same place on another device.
+        </p>
+      </li>
+    </ol>
+  </Section>
+
+  <Section
+    eyebrow="Common questions"
+    title="Before you start"
+    description="More answers are on the FAQ page."
+  >
+    <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+      <div class="rounded-[12px] border border-mist-border bg-air-wash p-8">
+        <h3 class="text-feature-heading">Still deciding?</h3>
+        <p class="mt-4 text-body">
+          Review the full catalog or send a question. Support is not connected in this preview.
+        </p>
+        <Button href="/contact" variant="secondary" size="sm" class="mt-6">
+          Contact page
+        </Button>
+      </div>
+      <Accordion items={faqItems} />
+    </div>
+  </Section>
+
+  <Section
+    tone="ink"
+    size="compact"
+    align="center"
+    title="Start with one clear course."
+    description="The catalog is ready for review. Enrollment opens after the secure account and payment phases are approved."
+  >
+    <div class="flex justify-center">
+      <Button href="/courses" variant="secondary" size="lg">
+        Browse the catalog
       </Button>
     </div>
-  </main>
-</BaseLayout>
+  </Section>
+</PublicLayout>

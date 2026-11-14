@@ -1,0 +1,186 @@
+---
+import PublicLayout from '../../layouts/PublicLayout.astro';
+import Badge from '../../components/ui/Badge.astro';
+import Button from '../../components/ui/Button.astro';
+import Card from '../../components/ui/Card.astro';
+import Section from '../../components/ui/Section.astro';
+import { courses, formatPrice, lessonCount, type Course } from '../../data/courses';
+
+export function getStaticPaths() {
+  return courses.map((course) => ({
+    params: { slug: course.slug },
+    props: { course },
+  }));
+}
+
+interface Props {
+  course: Course;
+}
+
+const { course } = Astro.props;
+const lessons = lessonCount(course);
+const updated = new Intl.DateTimeFormat('en-IN', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(new Date(course.updated));
+---
+
+<PublicLayout title={`${course.title} — ServiceNow Learn Easy`} description={course.summary}>
+  <Section size="hero">
+    <nav aria-label="Breadcrumb" class="mb-8">
+      <ol class="flex flex-wrap items-center gap-2 text-caption text-graphite-copy">
+        <li>
+          <a href="/" class="rounded-[4px] underline-offset-4 hover:underline">
+            Home
+          </a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li>
+          <a href="/courses" class="rounded-[4px] underline-offset-4 hover:underline">
+            Courses
+          </a>
+        </li>
+        <li aria-hidden="true">/</li>
+        <li aria-current="page" class="text-editorial-ink">
+          {course.title}
+        </li>
+      </ol>
+    </nav>
+
+    <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+      <div>
+        <div class="flex flex-wrap items-center gap-2">
+          <Badge>{course.level}</Badge>
+          <Badge tone="cyan">Sample content</Badge>
+        </div>
+
+        <h1 class="font-display mt-5 max-w-3xl text-hero-heading text-balance text-editorial-ink">
+          {course.title}
+        </h1>
+        <p class="mt-5 max-w-3xl text-body">{course.description}</p>
+
+        <dl class="mt-8 grid grid-cols-2 gap-4 border-y border-mist-border py-5 sm:grid-cols-4">
+          <div>
+            <dt class="text-utility font-medium uppercase text-graphite-copy">Lessons</dt>
+            <dd class="mt-1 text-feature-label font-medium text-editorial-ink">{lessons}</dd>
+          </div>
+          <div>
+            <dt class="text-utility font-medium uppercase text-graphite-copy">Duration</dt>
+            <dd class="mt-1 text-feature-label font-medium text-editorial-ink">
+              {course.duration}
+            </dd>
+          </div>
+          <div>
+            <dt class="text-utility font-medium uppercase text-graphite-copy">Level</dt>
+            <dd class="mt-1 text-feature-label font-medium text-editorial-ink">{course.level}</dd>
+          </div>
+          <div>
+            <dt class="text-utility font-medium uppercase text-graphite-copy">Updated</dt>
+            <dd class="mt-1 text-feature-label font-medium text-editorial-ink">{updated}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <Card tone="wash" class="lg:sticky lg:top-28">
+        <p class="text-utility font-medium uppercase text-graphite-copy">Sample price</p>
+        <p class="font-display mt-3 text-large-display text-editorial-ink">
+          {formatPrice(course.pricePaise)}
+        </p>
+        <p class="mt-3 text-caption text-graphite-copy">
+          Price is a placeholder. Enrollment and payment are not active in this preview.
+        </p>
+        <Button href="/contact" class="mt-6 w-full">
+          Ask about this course
+        </Button>
+        <p class="mt-4 text-caption text-graphite-copy">
+          Access will start only after the server verifies payment.
+        </p>
+      </Card>
+    </div>
+  </Section>
+
+  <Section tone="wash" size="compact" eyebrow="Outcomes" title="What you will be able to do">
+    <div class="grid gap-8 md:grid-cols-2">
+      <ul class="space-y-3">
+        {course.outcomes.map((outcome) => (
+          <li class="flex items-start gap-3 text-body">
+            <span
+              aria-hidden="true"
+              class="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full border border-charcoal bg-paper-white text-[10px]"
+            >
+              ✓
+            </span>
+            {outcome}
+          </li>
+        ))}
+      </ul>
+      <Card>
+        <h3 class="text-feature-label font-medium">Who this course is for</h3>
+        <ul class="mt-4 space-y-3 text-body">
+          {course.audience.map((item) => (
+            <li class="flex items-start gap-2">
+              <span aria-hidden="true">—</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+        <p class="mt-6 text-caption text-graphite-copy">
+          Sample audience description. Review before publication.
+        </p>
+      </Card>
+    </div>
+  </Section>
+
+  <Section
+    eyebrow="Curriculum"
+    title="Modules and lessons"
+    description="Sample outline. Final lesson order and titles will be confirmed before launch."
+  >
+    <div class="space-y-4">
+      {course.modules.map((module, moduleIndex) => (
+        <details class="group rounded-[12px] border border-mist-border bg-paper-white" open>
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-5 sm:p-6 [&::-webkit-details-marker]:hidden">
+            <span class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
+              <span class="text-utility font-medium uppercase text-graphite-copy">
+                Module {String(moduleIndex + 1).padStart(2, '0')}
+              </span>
+              <span class="text-feature-label font-medium text-editorial-ink">{module.title}</span>
+            </span>
+            <span
+              aria-hidden="true"
+              class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-mist-border transition-transform group-open:rotate-45"
+            >
+              +
+            </span>
+          </summary>
+          <ol class="space-y-2 border-t border-mist-border px-5 py-4 sm:px-6">
+            {module.lessons.map((lesson, lessonIndex) => (
+              <li class="flex items-center gap-3 text-body">
+                <span class="w-6 shrink-0 text-caption text-graphite-copy">
+                  {String(lessonIndex + 1).padStart(2, '0')}
+                </span>
+                {lesson}
+              </li>
+            ))}
+          </ol>
+        </details>
+      ))}
+    </div>
+  </Section>
+
+  <Section
+    tone="wash"
+    size="compact"
+    align="center"
+    title="Questions about this course?"
+    description="The contact form is not connected yet. You can review the FAQ or return to the catalog."
+  >
+    <div class="flex flex-wrap justify-center gap-3">
+      <Button href="/contact" variant="secondary">
+        Contact page
+      </Button>
+      <Button href="/courses">Back to catalog</Button>
+    </div>
+  </Section>
+</PublicLayout>

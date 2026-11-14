@@ -1,6 +1,11 @@
 ---
 import Button from './Button.astro';
 
+interface Props {
+  showAuth?: boolean;
+}
+
+const { showAuth = false } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 const links = [
@@ -58,15 +63,23 @@ const isCurrent = (href: string) =>
     </ul>
 
     <div class="hidden items-center gap-2 md:flex">
-      <a
-        href="/login"
-        class="rounded-[12px] px-3 py-2 text-label font-medium text-editorial-ink hover:bg-air-wash"
-      >
-        Log in
-      </a>
-      <Button href="/register" size="sm">
-        Start learning
-      </Button>
+      {showAuth ? (
+        <>
+          <a
+            href="/login"
+            class="rounded-[12px] px-3 py-2 text-label font-medium text-editorial-ink hover:bg-air-wash"
+          >
+            Log in
+          </a>
+          <Button href="/register" size="sm">
+            Start learning
+          </Button>
+        </>
+      ) : (
+        <Button href="/courses" size="sm">
+          Browse courses
+        </Button>
+      )}
     </div>
 
     <details class="relative md:hidden">
@@ -108,12 +121,20 @@ const isCurrent = (href: string) =>
           ))}
         </ul>
         <div class="mt-4 border-t border-mist-border pt-4">
-          <a href="/login" class="block rounded-[12px] px-4 py-3 text-label font-medium">
-            Log in
-          </a>
-          <Button href="/register" size="sm" class="mt-2 w-full">
-            Start learning
-          </Button>
+          {showAuth ? (
+            <>
+              <a href="/login" class="block rounded-[12px] px-4 py-3 text-label font-medium">
+                Log in
+              </a>
+              <Button href="/register" size="sm" class="mt-2 w-full">
+                Start learning
+              </Button>
+            </>
+          ) : (
+            <Button href="/courses" size="sm" class="w-full">
+              Browse courses
+            </Button>
+          )}
         </div>
       </div>
     </details>

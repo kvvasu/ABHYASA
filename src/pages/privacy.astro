@@ -1,0 +1,95 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+---
+
+<LegalLayout
+  title="Privacy Policy"
+  description="Draft privacy policy for ServiceNow Learn Easy."
+  updated="14 November 2026"
+>
+  <p>
+    This draft describes the data the planned learning platform expects to collect. It must be
+    reviewed and completed before any real student data is collected.
+  </p>
+
+  <h2>Information we collect</h2>
+  <ul>
+    <li>
+      Account details: name, email address, profile image if you use Google sign-in, and role.
+    </li>
+    <li>Learning data: course enrollments, lesson completion, and last playback position.</li>
+    <li>Order data: course, amount, currency, payment status, and payment provider order ID.</li>
+    <li>
+      Technical data: error logs and basic request data needed to operate and secure the service.
+    </li>
+  </ul>
+
+  <h2>How we use information</h2>
+  <ul>
+    <li>To create and secure your account.</li>
+    <li>To verify payment and grant course access.</li>
+    <li>To save progress and show it on another device.</li>
+    <li>To answer support requests and investigate abuse.</li>
+  </ul>
+
+  <h2>Payment processing</h2>
+  <p>
+    Payment is planned through Razorpay. Card and bank details are entered in the payment provider's
+    interface. This platform does not store full card numbers or payment credentials. It stores
+    order IDs, amounts, and payment status.
+  </p>
+
+  <h2>Service providers</h2>
+  <ul>
+    <li>Firebase Authentication for sign-in and account tokens.</li>
+    <li>Cloud Firestore for profile, enrollment, order, and progress records.</li>
+    <li>Cloudflare Pages and Functions for hosting and server-side requests.</li>
+    <li>Razorpay for payment processing and webhook notifications.</li>
+    <li>YouTube for video playback. YouTube may set its own cookies and collect playback data.</li>
+  </ul>
+
+  <h2>Cookies and local storage</h2>
+  <p>
+    The planned site uses browser storage for sign-in state and interface preferences. It does not
+    use advertising cookies. The final cookie list must be confirmed after the authentication and
+    video integrations are complete.
+  </p>
+
+  <h2>Retention</h2>
+  <p>
+    Account, enrollment, and order records are kept while the account is active and for the period
+    required for tax, accounting, and dispute handling. Progress records are kept while the
+    enrollment is active. Final retention periods require legal review.
+  </p>
+
+  <h2>Security</h2>
+  <p>
+    Access tokens are verified on the server. Payment events are verified by signature. Firestore
+    rules deny client writes to commercial and access-control records. No system is completely
+    secure, and the platform does not claim otherwise.
+  </p>
+
+  <h2>Your choices</h2>
+  <p>
+    You may request access, correction, or deletion of your account data. Some records may be
+    retained where the law requires it. A working request channel will be published before launch.
+  </p>
+
+  <h2>Children</h2>
+  <p>
+    The service is intended for working professionals. It is not directed to children. The minimum
+    age and parental-consent process require legal review.
+  </p>
+
+  <h2>Changes</h2>
+  <p>
+    This draft will change. A revised version will be published with a new date before production
+    use.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Contact details are placeholders in this preview. Use the <a href="/contact">contact page</a>{' '}
+    for the current review channel.
+  </p>
+</LegalLayout>

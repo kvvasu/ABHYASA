@@ -1,0 +1,88 @@
+---
+import PublicLayout from '../layouts/PublicLayout.astro';
+import Accordion from '../components/ui/Accordion.astro';
+import Button from '../components/ui/Button.astro';
+import Section from '../components/ui/Section.astro';
+
+const faqItems = [
+  {
+    question: 'Are the courses live or recorded?',
+    answer:
+      'The planned format is recorded lessons with written lesson notes. No live class schedule is published yet.',
+    open: true,
+  },
+  {
+    question: 'How long do I have access?',
+    answer:
+      'Access will stay active while your enrollment is active. The final access period is not confirmed in this preview.',
+  },
+  {
+    question: 'Can I continue on another device?',
+    answer:
+      'Yes. Lesson completion and your last position are stored with your account, not only in the browser. You must log in on the second device.',
+  },
+  {
+    question: 'How does payment work?',
+    answer:
+      'Payment is not active in this preview. The planned flow uses a payment provider checkout. Course access will start only after the server verifies the payment event.',
+  },
+  {
+    question: 'Can I share a lesson link?',
+    answer:
+      'No. Paid lesson data is returned only to an authorized account. Do not share lesson links or downloaded material. Video hosting is not a DRM system, so the platform cannot prevent screen recording.',
+  },
+  {
+    question: 'What is the refund policy?',
+    answer:
+      'The refund policy is still a draft. Review the Refund Policy page for the current placeholder and contact support before purchasing.',
+  },
+  {
+    question: 'Do you offer certificates?',
+    answer:
+      'Certificates are not part of the first release. Completion tracking is available, but it is not a certification.',
+  },
+  {
+    question: 'Is ServiceNow Learn Easy affiliated with ServiceNow?',
+    answer:
+      'No affiliation or endorsement is claimed. ServiceNow is a trademark of its owner. Course material is independent training content.',
+  },
+];
+---
+
+<PublicLayout
+  title="FAQ — ServiceNow Learn Easy"
+  description="Answers about course format, access, progress, payment, refunds, and ServiceNow affiliation."
+>
+  <Section
+    size="hero"
+    headingLevel="h1"
+    eyebrow="FAQ"
+    title="Answers before you enroll."
+    description="These answers describe the planned product. Items marked as pending will be confirmed before launch."
+  >
+    <div class="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
+      <aside class="rounded-[12px] border border-mist-border bg-air-wash p-6">
+        <p class="text-utility font-medium uppercase text-graphite-copy">Status</p>
+        <p class="mt-3 text-body">
+          Account creation, payment, and lesson access are not active in this preview.
+        </p>
+        <Button href="/contact" variant="secondary" size="sm" class="mt-5">
+          Contact page
+        </Button>
+      </aside>
+      <Accordion items={faqItems} />
+    </div>
+  </Section>
+
+  <Section
+    tone="wash"
+    size="compact"
+    align="center"
+    title="Still have a question?"
+    description="The contact form is not connected yet. The FAQ will expand as the product is finalized."
+  >
+    <div class="flex justify-center">
+      <Button href="/contact">Go to contact</Button>
+    </div>
+  </Section>
+</PublicLayout>

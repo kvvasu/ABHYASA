@@ -1,0 +1,75 @@
+---
+const year = new Date().getFullYear();
+
+const learnLinks = [
+  { href: '/courses', label: 'Course catalog' },
+  { href: '/about', label: 'About' },
+  { href: '/faq', label: 'FAQ' },
+];
+
+const supportLinks = [
+  { href: '/contact', label: 'Contact' },
+  { href: '/privacy', label: 'Privacy Policy' },
+  { href: '/terms', label: 'Terms and Conditions' },
+  { href: '/refund', label: 'Refund Policy' },
+];
+---
+
+<footer class="border-t border-mist-border px-gutter py-12">
+  <div class="mx-auto grid max-w-6xl gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
+    <div>
+      <p class="font-display text-card-heading text-editorial-ink">ServiceNow Learn Easy</p>
+      <p class="mt-3 max-w-sm text-caption text-graphite-copy">
+        Practical ServiceNow training. Short lessons, clear examples, and progress that follows you
+        across devices.
+      </p>
+      <p class="mt-5 text-utility font-medium uppercase text-graphite-copy">
+        Sample content for review
+      </p>
+    </div>
+
+    <div>
+      <p class="text-utility font-medium uppercase text-graphite-copy">Learn</p>
+      <ul class="mt-4 space-y-2">
+        {learnLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="rounded-[6px] text-label text-graphite-copy underline-offset-4 hover:text-editorial-ink hover:underline"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <p class="text-utility font-medium uppercase text-graphite-copy">Support</p>
+      <ul class="mt-4 space-y-2">
+        {supportLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="rounded-[6px] text-label text-graphite-copy underline-offset-4 hover:text-editorial-ink hover:underline"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <div class="mx-auto mt-10 flex max-w-6xl flex-wrap items-center justify-between gap-3 border-t border-mist-border pt-6 text-caption text-graphite-copy">
+    <p>© {year} ServiceNow Learn Easy. All rights reserved.</p>
+    <a
+      href="https://github.com/kvvasu/ABHYASA"
+      class="rounded-[6px] underline underline-offset-4 hover:text-editorial-ink"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      Project repository
+    </a>
+  </div>
+</footer>

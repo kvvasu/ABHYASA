@@ -1,0 +1,22 @@
+---
+import PublicLayout from '../layouts/PublicLayout.astro';
+import Button from '../components/ui/Button.astro';
+import Section from '../components/ui/Section.astro';
+---
+
+<PublicLayout title="Page not found — ServiceNow Learn Easy" noindex>
+  <Section
+    size="hero"
+    headingLevel="h1"
+    eyebrow="404"
+    title="That page is not here."
+    description="The link may be old, or the page may not exist yet. The course catalog and the home page are both available."
+  >
+    <div class="flex flex-wrap gap-3">
+      <Button href="/">Back to home</Button>
+      <Button href="/courses" variant="secondary">
+        Browse courses
+      </Button>
+    </div>
+  </Section>
+</PublicLayout>

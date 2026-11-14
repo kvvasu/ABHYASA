@@ -1,0 +1,48 @@
+---
+import PublicLayout from '../../layouts/PublicLayout.astro';
+import Section from '../../components/ui/Section.astro';
+import CourseCard from '../../components/CourseCard.astro';
+import { courses, SAMPLE_CONTENT_NOTE } from '../../data/courses';
+---
+
+<PublicLayout
+  title="Course Catalog — ServiceNow Learn Easy"
+  description="Review the ServiceNow course catalog. ITSM, ITOM Discovery, CMDB and IRE, Event Management, and HRSD."
+>
+  <Section
+    size="hero"
+    headingLevel="h1"
+    eyebrow="Course catalog"
+    title="Five courses. One practical path."
+    description="Start with ITSM fundamentals, then move into discovery, CMDB, event management, or HR service delivery. Every course listing below is sample content for review."
+  >
+    <div class="rounded-[12px] border border-mist-border bg-air-wash p-5">
+      <p class="text-utility font-medium uppercase text-graphite-copy">Sample content notice</p>
+      <p class="mt-2 max-w-3xl text-caption text-graphite-copy">{SAMPLE_CONTENT_NOTE}</p>
+    </div>
+  </Section>
+
+  <Section tone="wash" size="compact">
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {courses.map((course) => (
+        <CourseCard course={course} />
+      ))}
+    </div>
+  </Section>
+
+  <Section
+    size="compact"
+    align="center"
+    title="Not sure where to start?"
+    description="Begin with ITSM Fundamentals. It covers the platform navigation and core processes that the other courses build on."
+  >
+    <div class="flex justify-center">
+      <a
+        href="/courses/servicenow-itsm-fundamentals"
+        class="inline-flex rounded-[12px] border border-ash-copy px-5 py-3 text-label font-medium text-editorial-ink underline-offset-4 hover:bg-air-wash hover:underline"
+      >
+        View ITSM Fundamentals
+      </a>
+    </div>
+  </Section>
+</PublicLayout>

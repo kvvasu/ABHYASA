@@ -1,0 +1,28 @@
+---
+import PublicLayout from './PublicLayout.astro';
+import Section from '../components/ui/Section.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  updated: string;
+}
+
+const { title, description, updated } = Astro.props;
+---
+
+<PublicLayout title={`${title} — ServiceNow Learn Easy`} description={description}>
+  <Section size="hero" headingLevel="h1" eyebrow="Legal" title={title} description={description}>
+    <div class="mb-10 rounded-[12px] border border-alert-ink/40 bg-paper-white p-5">
+      <p class="text-utility font-medium uppercase text-alert-ink">Draft for review</p>
+      <p class="mt-2 max-w-3xl text-caption text-graphite-copy">
+        This page is a draft. It is not legal advice and it is not final. A qualified reviewer must
+        approve the text, jurisdiction, and business details before launch. Last updated {updated}.
+      </p>
+    </div>
+
+    <article class="max-w-3xl space-y-6 text-body [&_h2]:mt-10 [&_h2]:mb-3 [&_h2]:font-display [&_h2]:text-card-heading [&_h2]:text-editorial-ink [&_li]:ml-5 [&_li]:list-disc [&_li]:pl-1 [&_ul]:space-y-2">
+      <slot />
+    </article>
+  </Section>
+</PublicLayout>

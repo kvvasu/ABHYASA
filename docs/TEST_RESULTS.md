@@ -1,5 +1,29 @@
 # Test Results
 
+## Phase 3 — 2026-11-14
+
+Environment: Node 24.19.0, npm 11.17.0, Linux (WSL), Chromium 159 headless.
+
+| Check                | Command                              | Result                                      |
+| -------------------- | ------------------------------------ | ------------------------------------------- |
+| Type and Astro check | `npm run check`                      | Pass. 0 errors, 0 warnings (39 files).      |
+| Unit test            | `npm test`                           | Pass. 1 file, 1 test.                       |
+| Lint                 | `npm run lint`                       | Pass.                                       |
+| Format check         | `npm run format:check`               | Pass.                                       |
+| Production build     | `npm run build`                      | Pass. Static output for all public routes.  |
+| Browser tests        | `npm run test:e2e`                   | Pass. 22 tests in Chromium.                 |
+| Visual review        | Screenshots at 1440×1000 and 390×844 | Checked. Home, catalog, detail, contact.    |
+| Mobile overflow      | Playwright at 390×844                | Pass on Home, catalog, detail, and contact. |
+
+Notes:
+
+- Browser tests cover all public routes, one `h1` per page, description and
+  canonical metadata, sample notices, draft legal notices, the disabled contact
+  form, the 404 page, public navigation auth hiding, mobile navigation, and
+  horizontal overflow.
+- The final full suite was run after the last source change.
+- The preview server was reused for the final browser run.
+
 ## Phase 2 — 2026-11-14
 
 Environment: Node 24.19.0, npm 11.17.0, Linux (WSL), Chromium 159 headless.

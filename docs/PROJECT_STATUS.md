@@ -1,25 +1,28 @@
 # Project Status
 
-Current Phase: Phase 2 — Design System (awaiting approval)
-Current Branch: `feature/phase-02-design-system`
+Current Phase: Phase 3 — Public Website (awaiting approval)
+Current Branch: `feature/phase-03-public-pages`
 Last Commit: see `git log -1` on this branch
 Last Updated: 2026-11-14
 
 ## Completed
 
-- Phase 0 and Phase 1 approved. PR #2 merged into `develop`.
+- Phase 0, Phase 1, and Phase 2 approved. PR #2 and PR #3 merged into `develop`.
 - Full Captions Light color, typography, spacing, radius, and shadow tokens.
 - Responsive display sizes with `clamp()`.
 - Libre Baskerville 400/700 and Inter variable fonts, self-hosted.
 - Button, Card, Badge, Nav, Section, Input, Textarea, Select, Accordion, LoadingState, and ErrorState components.
 - `/design` component preview with foundations, components, and states.
-- Home page updated to use navigation and design tokens.
-- Keyboard, mobile navigation, and component browser tests.
-- Contrast checks documented in `docs/DESIGN_SYSTEM.md`.
+- Public layout with shared navigation and footer.
+- Home, Course Catalog, five Course Details pages, About, FAQ, Contact, Privacy, Terms, Refund, and 404.
+- Sample course data in `src/data/courses.ts`.
+- Open Graph, Twitter card, theme color, and canonical metadata.
+- Public navigation hides login and register until Phase 5.
+- Browser tests for public routes, metadata, sample notices, disabled contact form, mobile navigation, and overflow.
 
 ## In Progress
 
-- Phase 2 review by project owner.
+- Phase 3 review by project owner.
 
 ## Blocked
 
@@ -33,10 +36,10 @@ Last Updated: 2026-11-14
 
 - Unit tests: Pass. 1 file, 1 test.
 - Integration tests: Pass for health endpoint through `wrangler pages dev`.
-- Browser tests: Pass. 6 Playwright tests (Chromium).
+- Browser tests: Pass. 22 Playwright tests (Chromium).
 - Build: Pass. `astro check` reports 0 errors.
 - Lint and format: Pass.
-- Visual review: Desktop 1440×900 and mobile 390×844 checked.
+- Visual review: Desktop 1440×1000 and mobile 390×844 checked.
 
 ## Known Issues
 
@@ -45,12 +48,14 @@ Last Updated: 2026-11-14
 - Ash Copy is restricted to disabled text and Prism Cyan to accents because their contrast is below AA for body text.
 - `astro dev` does not serve Pages Functions. Use `npm run preview` for `/api/*`.
 - Cloudflare Pages deployment is not tested because account access is not available.
+- Course content is sample data, not CMS content. Legal pages are drafts and the refund policy is not final.
+- The contact form has no delivery endpoint; the submit button is disabled.
 
 ## Next Action
 
-- Owner reviews `/design`, then Phase 3 — Public Website starts after approval.
+- Owner reviews the public pages, then Phase 4 — Authentication starts after approval.
 
 ## Approval Required
 
-- Yes. Approve Phase 2.
-- Confirm the visual direction and font substitutes.
+- Yes. Approve Phase 3.
+- Confirm the sample course content, legal drafts, and public navigation behavior.
