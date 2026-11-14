@@ -2,8 +2,11 @@
 
 Learning Management System (LMS) for ServiceNow training courses.
 
-Status: Phase 3 (Public Website). Public pages are sample content for review.
-Authentication, payment, and paid video access are not implemented.
+Status: Phase 4 (Content Management), awaiting approval. Course pages are generated
+from Markdown content collections and edited through Decap CMS. GitHub OAuth is
+implemented and unit tested; a live login has not been verified because the OAuth
+App and Cloudflare secrets are not set up. Authentication, payment, and paid video
+access are not implemented.
 
 ## Stack
 
@@ -21,7 +24,7 @@ Authentication, payment, and paid video access are not implemented.
 
 Start with [docs/PROJECT_STATUS.md](docs/PROJECT_STATUS.md), then
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/ROADMAP.md](docs/ROADMAP.md),
-and [docs/DECISIONS.md](docs/DECISIONS.md).
+[docs/DECISIONS.md](docs/DECISIONS.md), and [docs/CMS.md](docs/CMS.md).
 
 ## Local development
 

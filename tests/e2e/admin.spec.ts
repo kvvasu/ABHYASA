@@ -17,7 +17,9 @@ test('admin config uses the self-hosted OAuth broker', async ({ request }) => {
   expect(config).toContain('publish_mode: editorial_workflow');
 });
 
-test('oauth start reports missing configuration instead of leaking details', async ({ request }) => {
+test('oauth start reports missing configuration instead of leaking details', async ({
+  request,
+}) => {
   const response = await request.get('/api/auth/github', { maxRedirects: 0 });
   expect([302, 500]).toContain(response.status());
   if (response.status() === 500) {

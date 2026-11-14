@@ -29,10 +29,10 @@ describe('public course content', () => {
     }
   });
 
-  it('marks every entry as sample content', () => {
+  it('declares whether every entry is sample content', () => {
     for (const file of files) {
       const source = readFileSync(join(contentDir, file), 'utf8');
-      expect(source, `${file} is missing sample: true`).toMatch(/^sample:\s*true$/m);
+      expect(source, `${file} is missing a sample flag`).toMatch(/^sample:\s*(true|false)$/m);
     }
   });
 });

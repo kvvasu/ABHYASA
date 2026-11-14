@@ -1,5 +1,25 @@
 # Changelog
 
+## Phase 4 — 2026-11-14
+
+- Added the `courses` Astro content collection with a validation schema for
+  required fields, enums, non-empty modules and lessons, and integer prices.
+- Moved the five sample courses from `src/data/courses.ts` to
+  `src/content/courses/*.md` with frontmatter and a Markdown overview body.
+- Added `src/lib/courses.ts` for sorted course reads, lesson counts, and price
+  formatting.
+- Added Decap CMS at `/admin/` with editorial workflow and course fields.
+- Added self-hosted GitHub OAuth in `/api/auth/github` and
+  `/api/auth/callback` with a signed, expiring state cookie.
+- Added unit tests for content privacy, the Decap config, OAuth state, cookie
+  attributes, callback rendering, and token exchange.
+- Added browser tests for the admin entry point, OAuth configuration handling,
+  course ordering, and module ordering.
+- Added `npm run scan:public` to fail if private lesson data or secrets reach
+  `dist/`.
+- Documented the OAuth flow, setup URLs, security risks, and content workflow.
+- Pinned the Decap CDN build to 3.17.3.
+
 ## Phase 3 — 2026-11-14
 
 - Added public layout, footer, and shared public navigation.

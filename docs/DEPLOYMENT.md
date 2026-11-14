@@ -25,6 +25,32 @@ npm run preview
 `wrangler pages dev ./dist` serves static assets from `dist` and Functions from
 `functions/`. Default port is 8788.
 
+## Content changes
+
+Public content flows through Git; the site rebuilds from the merged commit.
+
+1. An editor saves a draft at `/admin/`. Decap creates a branch and a pull request
+   into `develop` (editorial workflow). Nothing is published yet.
+2. Review the pull request. Run `npm run check`, `npm test`, `npm run build`, and
+   `npm run scan:public`.
+3. Merge into `develop`. A pull request into the production branch triggers the
+   Pages build after the Git integration is connected.
+4. Pages runs `npm run build` and deploys `dist/` with `functions/`. Content is
+   static after that build.
+
+Until the Cloudflare Pages Git integration is connected (account access is
+blocked), step 4 is manual from an approved commit:
+
+```bash
+npm ci
+npm run build
+npm run scan:public
+npm run deploy
+```
+
+Never edit content in the Cloudflare dashboard. Markdown in Git is the source of
+truth. Private lesson data never enters this workflow.
+
 ## Secrets
 
 Set production secrets in Cloudflare Pages, not in Git:
