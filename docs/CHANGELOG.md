@@ -1,5 +1,14 @@
 # Changelog
 
+## Phase 4 OAuth preview fix — 2026-11-15
+
+- Added build-time `CMS_SITE_URL` substitution so preview CMS config points at
+  the same-host OAuth Functions; local browser tests use `127.0.0.1` consistently.
+- Send the exact callback URI during token exchange and verify callback messages
+  come from the opener at the expected origin.
+- Documented feature preview URLs, Preview settings, OAuth callback alternatives,
+  and pending live login/draft-to-PR checks.
+
 ## Phase 4 CMS configuration fix — 2026-11-14
 
 - Added the required top-level Decap `media_folder` and `public_folder` settings

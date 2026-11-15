@@ -1,10 +1,9 @@
 # Project Status
 
-Current Phase: Phase 4 — Content Management implemented, awaiting approval.
+Current Phase: Phase 4 — Content Management implemented, OAuth preview fix in progress.
 Current Branch: `feature/phase-04-content-management`
-Last Commit: `f042827` (Phase 4 WIP) plus the Phase 4 completion commit; run
-`git log -1` on this branch for the current hash.
-Last Updated: 2026-11-14
+Last Commit: run `git log -1` on this branch for the current hash.
+Last Updated: 2026-11-15
 
 ## Completed
 
@@ -23,10 +22,10 @@ Last Updated: 2026-11-14
 
 ### Completed in Phase 4 (awaiting approval)
 
-- Fixed Decap CMS 3.17.3 configuration validation: added the required top-level
-  `media_folder` / `public_folder` for public marketing assets and regression
-  tests. Live `/admin/` browser test reaches the GitHub login screen without
-  config errors; GitHub OAuth itself remains unverified.
+- Fixed Decap CMS 3.17.3 configuration validation and added a build-time
+  `CMS_SITE_URL` override so preview `/admin/` targets the same preview's OAuth
+  functions. Tightened callback origin/source checks and matched token exchange's
+  `redirect_uri`. Preview login/draft verification remains pending account setup.
 - `courses` Astro content collection with a validation schema for required text,
   enums, integer prices, dates, and non-empty modules and lessons.
 - Five Markdown courses in `src/content/courses/` with frontmatter and a public
@@ -48,27 +47,27 @@ Last Updated: 2026-11-14
 
 ## In Progress
 
-- Phase 4 review and approval. The code is complete; a live GitHub OAuth login
-  has not been verified because the OAuth App and Cloudflare secrets do not exist.
+- Phase 4 OAuth preview testing. Feature preview is deployed, but OAuth app
+  callback settings and Cloudflare Preview variables are not configured.
 
 ## Blocked
 
-- GitHub OAuth App creation and Cloudflare secret upload need account access.
-- Cloudflare Pages project creation and deployment need account access.
+- Owner must configure GitHub OAuth callback URL(s) and Cloudflare Pages Preview
+  variables/secrets before full login and draft-to-PR testing.
 - Phase 5 needs a Firebase project and web app configuration.
 - Phase 6 needs a Firebase service account.
 - Phase 7 needs Razorpay test keys and a webhook secret.
 
 ## Test Status
 
-- Unit tests: Pass. 4 files, 19 tests.
-- Astro and type check: Pass. 0 errors, 0 warnings (49 files).
+- Unit tests: Pass. 4 files, 21 tests.
+- Astro and type check: Pass. 0 errors, 0 warnings (50 files).
 - Browser tests: Pass. 29 Playwright tests (Chromium) through `wrangler pages dev`.
 - Build: Pass. 15 pages generated from Markdown collections.
 - Lint and format: Pass.
-- Public output scan: Pass. 33 files in `dist/`, no private lesson data or secrets.
+- Public output scan: Pass. 34 files in `dist/`, no private lesson data or secrets.
 - Secret scan: Pass. `git grep` patterns; `gitleaks` is not installed.
-- Live OAuth login: Not tested. Mock-binding integration check passes.
+- Deployed preview OAuth login and draft PR: Pending account configuration; do not claim verified.
 - Visual review: Desktop 1440×1000 and mobile 390×844 checked in Phase 3.
 
 ## Known Issues
@@ -77,16 +76,16 @@ Last Updated: 2026-11-14
 - Licensed Exposure and DenimINK fonts are not available. Libre Baskerville and Inter are approved substitutes.
 - Ash Copy is restricted to disabled text and Prism Cyan to accents because their contrast is below AA for body text.
 - `astro dev` does not serve Pages Functions. Use `npm run preview` for `/api/*`.
-- Cloudflare Pages deployment is not tested because account access is not available.
-- A live Decap login is unverified. GitHub OAuth Apps allow one callback URL, so preview deployments need a second OAuth App.
+- No new Cloudflare deployment was triggered from this workspace; account deployment controls are unavailable.
+- A live Decap login is unverified. Feature preview handlers are deployed, but Preview secrets and a matching OAuth callback configuration are still required.
 - Paid video IDs are not implemented and never belong in Markdown. Course content is sample data; legal pages are drafts and the refund policy is not final.
 - The contact form has no delivery endpoint; the submit button is disabled.
 
 ## Next Action
 
-- Owner: create the GitHub OAuth App, upload the three Cloudflare secrets, deploy,
-  and confirm the `/admin/` login and editorial pull request.
-- Then complete Phase 4 approval and merge the pull request.
+- Owner: register the production and feature-preview OAuth callback URL(s), set
+  the Cloudflare Preview variables/secrets listed in `docs/CMS.md`, then ask for
+  full login and draft-to-PR verification. Do not change production branch or merge.
 
 ## Approval Required
 

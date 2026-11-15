@@ -22,7 +22,11 @@ test('admin config uses the self-hosted OAuth broker', async ({ request }) => {
   const response = await request.get('/admin/config.yml');
   expect(response.status()).toBe(200);
   const config = await response.text();
+  expect(config).toContain('base_url: http://127.0.0.1:4321');
+  expect(config).toContain('site_domain: http://127.0.0.1:4321');
   expect(config).toContain('auth_endpoint: /api/auth/github');
+  expect(config).toMatch(/base_url: https?:\/\/.+/);
+  expect(config).toMatch(/site_domain: https?:\/\/.+/);
   expect(config).toContain('folder: src/content/courses');
   expect(config).toContain('publish_mode: editorial_workflow');
 });
@@ -39,12 +43,8 @@ test('admin config satisfies the top-level media requirement', async ({ request 
   expect(config).not.toMatch(/^\s+media_library:/m);
 });
 
-test('oauth start reports missing configuration instead of leaking details', async ({
-  request,
-}) => {
+test('oauth start fails closed without matching host configuration', async ({ request }) => {
   const response = await request.get('/api/auth/github', { maxRedirects: 0 });
-  expect([302, 500]).toContain(response.status());
-  if (response.status() === 500) {
-    expect(await response.text()).toBe('GitHub OAuth is not configured.');
-  }
+  expect(response.status()).toBe(500);
+  expect(await response.text()).toBe('GitHub OAuth is not configured for this host.');
 });

@@ -10,6 +10,7 @@ import { onRequestGet as finishAuth } from '../../functions/api/auth/callback';
 
 const SECRET = 'test-state-secret';
 const env = {
+  CMS_SITE_URL: 'https://site.test',
   GITHUB_OAUTH_CLIENT_ID: 'client-id',
   GITHUB_OAUTH_CLIENT_SECRET: 'client-secret',
   OAUTH_STATE_SECRET: SECRET,
@@ -42,11 +43,20 @@ describe('OAuth callback page', () => {
     );
     expect(html).not.toContain('</script><script>alert(1)');
     expect(html).toContain('https://site.test');
+    expect(html).toContain('event.source !== window.opener');
     expect(html).toContain('authorization:github:error');
   });
 });
 
 describe('GitHub OAuth functions', () => {
+  it('rejects a host that does not match CMS_SITE_URL', async () => {
+    const request = new Request('https://other.test/api/auth/github');
+    const response = (await startAuth({ request, env } as never)) as Response;
+
+    expect(response.status).toBe(500);
+    expect(response.headers.has('location')).toBe(false);
+  });
+
   it('redirects to GitHub with state and a scoped cookie', async () => {
     const request = new Request('https://site.test/api/auth/github');
     const response = (await startAuth({ request, env } as never)) as Response;
@@ -66,6 +76,14 @@ describe('GitHub OAuth functions', () => {
     await expect(verifyState(state, SECRET)).resolves.toBe(true);
   });
 
+  it('rejects callbacks on a host that does not match CMS_SITE_URL', async () => {
+    const request = new Request('https://other.test/api/auth/callback?code=abc&state=state');
+    const response = (await finishAuth({ request, env } as never)) as Response;
+
+    expect(response.status).toBe(500);
+    expect(await response.text()).toBe('GitHub OAuth is not configured for this host.');
+  });
+
   it('rejects a callback without a matching state cookie', async () => {
     const request = new Request('https://site.test/api/auth/callback?code=abc&state=wrong');
     const response = (await finishAuth({ request, env } as never)) as Response;
@@ -79,13 +97,14 @@ describe('GitHub OAuth functions', () => {
     const request = new Request(`https://site.test/api/auth/callback?code=abc&state=${state}`, {
       headers: { cookie: `decap_oauth_state=${state}` },
     });
-    const fetchMock = vi.fn(
-      async () =>
-        new Response(JSON.stringify({ access_token: 'gho_test_token' }), {
-          status: 200,
-          headers: { 'content-type': 'application/json' },
-        }),
-    );
+    const requestOptions: RequestInit[] = [];
+    const fetchMock = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+      if (init) requestOptions.push(init);
+      return new Response(JSON.stringify({ access_token: 'gho_test_token' }), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      });
+    });
     vi.stubGlobal('fetch', fetchMock);
 
     const response = (await finishAuth({ request, env } as never)) as Response;
@@ -95,6 +114,9 @@ describe('GitHub OAuth functions', () => {
     expect(response.status).toBe(200);
     expect(body).toContain('authorization:github:success');
     expect(body).toContain('gho_test_token');
+    expect(
+      new URLSearchParams(requestOptions[0]?.body as URLSearchParams).get('redirect_uri'),
+    ).toBe('https://site.test/api/auth/callback');
     expect(response.headers.get('set-cookie')).toContain('Max-Age=0');
   });
 });

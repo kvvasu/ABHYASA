@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro check && astro build && node scripts/configure-admin-config.mjs",
     "preview": "wrangler pages dev ./dist",
     "check": "astro check",
     "lint": "eslint .",

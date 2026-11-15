@@ -1,9 +1,30 @@
 # Test Results
 
-## Phase 4 — CMS config fix — 2026-11-14
+## Phase 4 — OAuth preview fix — 2026-11-15
 
 Environment: Node 24.19.0, npm 11.17.0, Linux (WSL), Chromium 159 headless,
 Wrangler 4.162.0.
+
+| Check                   | Command                            | Result                                                              |
+| ----------------------- | ---------------------------------- | ------------------------------------------------------------------- |
+| Type and Astro check    | `npm run check`                    | Pass. 0 errors, warnings, or hints (50 files).                      |
+| Unit tests              | `npm test`                         | Pass. 4 files, 21 tests.                                            |
+| Lint                    | `npm run lint`                     | Pass.                                                               |
+| Format check            | `npm run format:check`             | Pass.                                                               |
+| Build                   | `npm run build`                    | Pass. 15 pages; deployment origin injected when `CMS_SITE_URL` set. |
+| Public output scan      | `npm run scan:public`              | Pass. 34 files; no private lesson data or secrets.                  |
+| Browser tests           | `CI=1 npm run test:e2e`            | Pass. 29 Chromium tests.                                            |
+| Deployed preview start  | Feature preview `/api/auth/github` | Reaches handler, currently 500 until Preview vars are set.          |
+| Production start        | Production `/api/auth/github`      | 404 on current `develop` deployment; unchanged.                     |
+| Full OAuth and draft PR | Manual after setup                 | Pending OAuth App and Cloudflare account configuration.             |
+
+Verified deployment URLs:
+
+- Branch preview: <https://feature-phase-04-content-man.servicenow-learn-easy.pages.dev>
+- Commit preview: <https://d8e88593.servicenow-learn-easy.pages.dev>
+
+Neither preview can complete login until account settings are configured. No
+OAuth secrets were accessed or changed.
 
 | Check                   | Command                    | Result                                                                    |
 | ----------------------- | -------------------------- | ------------------------------------------------------------------------- |
@@ -16,19 +37,7 @@ Wrangler 4.162.0.
 | Live CMS config         | Chromium `/admin/`         | Pass. Decap shows "Login with GitHub"; no config error or browser errors. |
 | Live GitHub OAuth login | `/admin/` on deployed site | Not run. Credentials and deployed OAuth App unavailable.                  |
 
-Current fix verification: `npm run check`, `npm run lint`, `npm run format:check`,
-`npm test`, `npm run build`, `npm run scan:public`, and `npm run test:e2e` all
-pass after the configuration change. The E2E suite now includes a real browser
-assertion that Decap reaches its GitHub login screen without config errors.
-
-The unit regression test parses `public/admin/config.yml`, checks the exact
-Decap 3.17.3 pin, and asserts that `media_folder` exists at the top level, points
-to `public/uploads/public`, and remains outside `src/content/courses`. It also
-checks the backend, editorial workflow, course collection, and absence of private
-fields. The browser test verifies the served config retains the top-level media
-settings. Live GitHub OAuth is not tested or claimed to work.
-
-## Phase 4 — Initial implementation — 2026-11-14
+## Phase 4 — CMS config fix — 2026-11-14
 
 Environment: Node 24.19.0, npm 11.17.0, Linux (WSL), Chromium 159 headless,
 Wrangler 4.162.0.

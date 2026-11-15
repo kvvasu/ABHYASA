@@ -1,16 +1,22 @@
 import { createState, STATE_MAX_AGE_SECONDS } from '../../../src/lib/oauth';
 
 interface Env {
+  CMS_SITE_URL: string;
   GITHUB_OAUTH_CLIENT_ID: string;
   OAUTH_STATE_SECRET: string;
 }
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
-  if (!env.GITHUB_OAUTH_CLIENT_ID || !env.OAUTH_STATE_SECRET) {
-    return new Response('GitHub OAuth is not configured.', { status: 500 });
+  const url = new URL(request.url);
+  if (
+    !env.CMS_SITE_URL ||
+    url.origin !== env.CMS_SITE_URL ||
+    !env.GITHUB_OAUTH_CLIENT_ID ||
+    !env.OAUTH_STATE_SECRET
+  ) {
+    return new Response('GitHub OAuth is not configured for this host.', { status: 500 });
   }
 
-  const url = new URL(request.url);
   const state = await createState(env.OAUTH_STATE_SECRET);
   const authorize = new URL('https://github.com/login/oauth/authorize');
   authorize.searchParams.set('client_id', env.GITHUB_OAUTH_CLIENT_ID);

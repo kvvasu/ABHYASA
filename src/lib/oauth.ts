@@ -79,7 +79,7 @@ export function renderCallback(
       const origin = ${toScriptJson(origin)};
       const message = ${toScriptJson(message)};
       const receiveMessage = (event) => {
-        if (event.origin !== origin) return;
+        if (event.origin !== origin || event.source !== window.opener || !window.opener) return;
         window.opener.postMessage(message, origin);
         window.removeEventListener('message', receiveMessage, false);
       };

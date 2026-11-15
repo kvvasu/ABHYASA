@@ -41,6 +41,8 @@ describe('Decap CMS config', () => {
       branch: 'develop',
       auth_endpoint: '/api/auth/github',
     });
+    expect(config.backend.base_url).toBe(config.backend.site_domain);
+    expect(new URL(config.backend.base_url).origin).toBe(config.backend.base_url);
   });
 
   it('uses the editorial workflow', () => {

@@ -53,49 +53,79 @@ Flow:
 4. The function checks the state against the cookie and the signature, exchanges
    the code for an access token, and returns an HTML page.
 5. That page posts `authorization:github:success:{token,provider}` to the opener
-   only when the opener origin matches the site origin. Decap then calls the
-   GitHub API directly with the user's token.
+   only after a message comes from the opener window at the exact site origin.
+   Decap then calls the GitHub API directly with the user's token.
 
 No client secret or token is stored in the static build.
 
 ## GitHub OAuth App configuration
 
-Create one OAuth App at <https://github.com/settings/developers>:
+Create an OAuth App at <https://github.com/settings/developers>:
 
-| Setting                | Value                                                       |
-| ---------------------- | ----------------------------------------------------------- |
-| Application name       | `ServiceNow Learn Easy CMS`                                 |
-| Homepage URL           | `https://servicenow-learn-easy.pages.dev`                   |
-| Authorization callback | `https://servicenow-learn-easy.pages.dev/api/auth/callback` |
+| Setting          | Value                                     |
+| ---------------- | ----------------------------------------- |
+| Application name | `ServiceNow Learn Easy CMS`               |
+| Homepage URL     | `https://servicenow-learn-easy.pages.dev` |
 
-Then set these variables on the Cloudflare Pages project:
+Register the exact callback URL for each environment:
 
-| Variable                     | Type   | Environments |
-| ---------------------------- | ------ | ------------ |
-| `GITHUB_OAUTH_CLIENT_ID`     | Plain  | Production   |
-| `GITHUB_OAUTH_CLIENT_SECRET` | Secret | Production   |
-| `OAUTH_STATE_SECRET`         | Secret | Production   |
-
-`OAUTH_STATE_SECRET` is any random value of 32 bytes or more. Generate one with
-`openssl rand -hex 32`. Rotating it invalidates in-progress logins only.
-
-CLI equivalent:
-
-```bash
-npx wrangler pages secret put GITHUB_OAUTH_CLIENT_SECRET
-npx wrangler pages secret put OAUTH_STATE_SECRET
+```text
+Production: https://servicenow-learn-easy.pages.dev/api/auth/callback
+Preview:    https://feature-phase-04-content-man.servicenow-learn-easy.pages.dev/api/auth/callback
 ```
 
+GitHub documents up to 10 callback URLs per OAuth App. Add both to one app if
+its settings allow it; otherwise use a separate preview OAuth App. Do not enable
+wildcard matching. The auth-start Function uses the request host to construct
+`redirect_uri`, and the callback exchange sends that exact URI; each must match
+a registered callback.
+
+| Setting                | Preview value                                                                            |
+| ---------------------- | ---------------------------------------------------------------------------------------- |
+| Application name       | `ServiceNow Learn Easy CMS Preview`                                                      |
+| Homepage URL           | `https://feature-phase-04-content-man.servicenow-learn-easy.pages.dev`                   |
+| Authorization callback | `https://feature-phase-04-content-man.servicenow-learn-easy.pages.dev/api/auth/callback` |
+
+Use that app's client ID and secret only in the Cloudflare Preview environment.
+GitHub's expiring user-authorization tokens require refresh-token handling, which
+this broker does not implement. If the OAuth App enables token expiration, editors
+will need to reauthorize after expiry; disable expiration if that option is
+available and persistent CMS sessions are required.
+
+In Cloudflare, open **Workers & Pages → servicenow-learn-easy → Settings →
+Variables and Secrets**. Set the four values below for the **Preview** environment
+only; do not change Production settings or the production branch:
+
+| Variable                     | Type   | Preview value                                                          |
+| ---------------------------- | ------ | ---------------------------------------------------------------------- |
+| `CMS_SITE_URL`               | Plain  | `https://feature-phase-04-content-man.servicenow-learn-easy.pages.dev` |
+| `GITHUB_OAUTH_CLIENT_ID`     | Plain  | Existing App ID (or separate Preview App ID)                           |
+| `GITHUB_OAUTH_CLIENT_SECRET` | Secret | Existing App secret (or separate Preview App secret)                   |
+| `OAUTH_STATE_SECRET`         | Secret | New random value of at least 32 bytes                                  |
+
+Set Preview variables so they are available during the build and to Pages
+Functions. The build substitutes `CMS_SITE_URL` into generated
+`dist/admin/config.yml` as `base_url` and `site_domain`; auth functions reject
+requests whose host differs from the **runtime** `CMS_SITE_URL` binding. Configure
+its same value in both Preview build and runtime settings. Without the build value,
+checked-in config defaults to production. Cloudflare requires a new deployment for changed build
+variables to take effect; trigger a Preview deployment from the feature branch.
+Production settings and deployment remain unchanged.
+`OAUTH_STATE_SECRET` can be generated with `openssl rand -hex 32`; never paste or
+commit its value. Rotating it invalidates in-progress logins only.
+
 For local Pages Functions, copy `.dev.vars.example` to `.dev.vars` and fill the
-three values. Wrangler reads `.dev.vars` during `npm run preview`.
+three OAuth values. Its `CMS_SITE_URL` defaults to `http://127.0.0.1:8788`, the
+default `npm run preview` URL. The E2E server uses port `4321`; for real login
+there, set `CMS_SITE_URL=http://127.0.0.1:4321` in both the build environment and
+`.dev.vars`, and register that exact callback URL in the OAuth App.
 
 ### Constraints
 
-- GitHub OAuth Apps allow one callback URL. Logins therefore work only on the
-  configured host. Cloudflare preview deployments with generated hostnames
-  cannot complete the popup flow unless a separate OAuth App is created for them.
-- Moving to a custom domain requires updating the callback URL, `base_url`, and
-  `site_domain` in `public/admin/config.yml`.
+- GitHub documents up to 10 callbacks per OAuth App. Register exact hosts only;
+  never use wildcard callbacks.
+- Moving to a custom domain requires updating the OAuth callback URL and
+  `CMS_SITE_URL` for that deployment; the build sets `base_url` and `site_domain`.
 - The OAuth scope is `public_repo`, enough for this public repository. A private
   repository needs the broader `repo` scope in `functions/api/auth/github.ts`.
 - Only GitHub users with push access can publish. Decap's editorial workflow
@@ -111,8 +141,9 @@ Full analysis is in ADR-009. Summary:
 | Access token read by injected script | Post only to the exact site origin; no third-party scripts on `/admin/`. |
 | Broad scope (`public_repo`)          | Restrict CMS use to repository collaborators with push access.           |
 | Login CSRF or replayed callback      | Signed 10-minute state bound to an `HttpOnly`, `SameSite=Lax` cookie.    |
-| Preview host cannot log in           | One callback URL per OAuth App; use a second App for previews if needed. |
+| Preview host cannot log in           | Register that exact host's callback URL; no wildcard callback.           |
 | Token in browser storage             | Accepted for Decap; add a Content Security Policy in a later phase.      |
+| Expiring GitHub access token         | Disable expiration until refresh-token rotation is implemented.          |
 
 Do not add analytics, widgets, or other third-party scripts to `/admin/`. Pinning
 the Decap CDN version limits supply-chain drift; the pin is the version recorded
@@ -126,9 +157,18 @@ and token exchange. A live login was not completed because this workspace has no
 GitHub OAuth App credentials or Cloudflare account access. Complete the account
 steps above and test `/admin/` on the deployed site before relying on the CMS.
 
-The live check must confirm: the popup opens GitHub, the callback returns to the
-site, Decap shows the signed-in account, a saved draft creates a pull request, and
-`develop` is unchanged until that pull request is merged.
+Current feature preview: <https://feature-phase-04-content-man.servicenow-learn-easy.pages.dev>.
+It serves the Phase 4 handlers, but currently returns 500 because Preview OAuth
+variables are not configured. Production `develop` still returns its custom 404
+at `/api/auth/github`. This is expected until the feature branch is deployed with
+its Functions and the CMS's build-time origin points at that same preview.
+
+After configuring the OAuth callbacks and Cloudflare Preview variables above,
+test the preview end-to-end: the popup opens GitHub, callback returns to the
+preview, Decap shows the signed-in account, saving a draft creates a PR targeting
+`develop`, and the `develop` ref remains unchanged. Do not treat the presence of
+an editorial workflow setting alone as verification that the OAuth user's token
+can create PRs.
 
 ## Public and private content
 
@@ -163,7 +203,8 @@ dragging list items, then confirm the generated YAML before publishing.
 
 ## Editing workflow
 
-1. Open `/admin/` on the production site and sign in with GitHub.
+1. Open `/admin/` on the production site and sign in with GitHub. During preview
+   validation, use the feature-preview URL listed above instead.
 2. Edit a course.
 3. Save. With `publish_mode: editorial_workflow`, Decap creates a branch and a
    pull request into `develop`.
