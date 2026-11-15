@@ -13,7 +13,11 @@ inside free limits.
 | Functions directory    | `functions` (default) |
 | Node version           | 22 or newer           |
 
-`wrangler.jsonc` sets the Pages output directory and compatibility date.
+`wrangler.jsonc` sets the Pages output directory and compatibility date; it does
+not configure build environment variable injection. Cloudflare Pages provides
+`CF_PAGES_BRANCH` and `CF_PAGES_URL` during builds. The CMS config build script
+uses these to select a Preview hostname when `CMS_SITE_URL` is unavailable; an
+explicit `CMS_SITE_URL` remains authoritative.
 
 ## Local full-stack preview
 

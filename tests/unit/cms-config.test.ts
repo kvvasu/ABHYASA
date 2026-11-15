@@ -1,7 +1,10 @@
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { parse } from 'yaml';
+import { configureAdminConfig } from '../../scripts/configure-admin-config.mjs';
 
 // Decap CMS validates config.yml against a JSON schema at runtime. A missing
 // required property shows "Error loading the CMS configuration" in /admin/.
@@ -17,6 +20,49 @@ const topLevelMediaKeys = source
   .map((line) => line.split(':')[0]);
 
 describe('Decap CMS config', () => {
+  it('generates the current Cloudflare Preview hostname when build vars are absent', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'abhyasa-cms-config-'));
+    const configPath = pathToFileURL(join(directory, 'config.yml'));
+    try {
+      writeFileSync(configPath, source);
+      configureAdminConfig({
+        configPath,
+        env: {
+          CF_PAGES_BRANCH: 'feature/phase-04-content-management',
+          CF_PAGES_URL: 'https://f99228f.servicenow-learn-easy.pages.dev',
+        },
+      });
+
+      const generated = parse(readFileSync(configPath, 'utf8'));
+      expect(generated.backend.base_url).toBe(
+        'https://feature-phase-04-content-man.servicenow-learn-easy.pages.dev',
+      );
+      expect(generated.backend.site_domain).toBe(generated.backend.base_url);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+  it('uses CMS_SITE_URL when explicitly configured and preserves production defaults otherwise', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'abhyasa-cms-config-'));
+    const configPath = pathToFileURL(join(directory, 'config.yml'));
+    try {
+      writeFileSync(configPath, source);
+      configureAdminConfig({ configPath, env: { CMS_SITE_URL: 'https://preview.example' } });
+      expect(parse(readFileSync(configPath, 'utf8')).backend.base_url).toBe(
+        'https://preview.example',
+      );
+
+      writeFileSync(configPath, source);
+      configureAdminConfig({ configPath, env: { CF_PAGES_BRANCH: 'main' } });
+      expect(parse(readFileSync(configPath, 'utf8')).backend.base_url).toBe(
+        'https://servicenow-learn-easy.pages.dev',
+      );
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
   it('pins the Decap bundle to an exact version', () => {
     expect(entry.match(/decap-cms@(\d+\.\d+\.\d+)\//)?.[1]).toBe('3.17.3');
   });

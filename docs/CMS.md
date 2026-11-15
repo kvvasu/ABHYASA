@@ -103,14 +103,16 @@ only; do not change Production settings or the production branch:
 | `GITHUB_OAUTH_CLIENT_SECRET` | Secret | Existing App secret (or separate Preview App secret)                   |
 | `OAUTH_STATE_SECRET`         | Secret | New random value of at least 32 bytes                                  |
 
-Set Preview variables so they are available during the build and to Pages
-Functions. The build substitutes `CMS_SITE_URL` into generated
-`dist/admin/config.yml` as `base_url` and `site_domain`; auth functions reject
-requests whose host differs from the **runtime** `CMS_SITE_URL` binding. Configure
-its same value in both Preview build and runtime settings. Without the build value,
-checked-in config defaults to production. Cloudflare requires a new deployment for changed build
-variables to take effect; trigger a Preview deployment from the feature branch.
-Production settings and deployment remain unchanged.
+`CMS_SITE_URL` is needed by Pages Functions at runtime. The build uses it as an
+explicit override when present. If Cloudflare does not expose that runtime binding
+to the build, the build derives the Preview hostname from Cloudflare's automatic
+`CF_PAGES_BRANCH` and `CF_PAGES_URL` variables; the production branch (`main`)
+retains the checked-in Production hostname. This configures generated
+`dist/admin/config.yml` (`base_url` and `site_domain`) without hardcoding a single
+Preview URL. Auth functions still reject requests whose host differs from the
+**runtime** `CMS_SITE_URL` binding. Keep the Preview runtime value aligned with the
+preview hostname and trigger a new feature-branch deployment. Production settings
+and deployment remain unchanged.
 `OAUTH_STATE_SECRET` can be generated with `openssl rand -hex 32`; never paste or
 commit its value. Rotating it invalidates in-progress logins only.
 
