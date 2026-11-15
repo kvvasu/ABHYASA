@@ -3,11 +3,33 @@ import { createState, STATE_MAX_AGE_SECONDS } from '../../../src/lib/oauth';
 interface Env {
   CMS_SITE_URL: string;
   GITHUB_OAUTH_CLIENT_ID: string;
+  GITHUB_OAUTH_CLIENT_SECRET: string;
   OAUTH_STATE_SECRET: string;
 }
 
+const PREVIEW_DIAGNOSTIC_ORIGIN =
+  'https://feature-phase-04-content-man.servicenow-learn-easy.pages.dev';
+
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   const url = new URL(request.url);
+  if (url.origin === PREVIEW_DIAGNOSTIC_ORIGIN) {
+    const bindings = {
+      CMS_SITE_URL: env.CMS_SITE_URL,
+      GITHUB_OAUTH_CLIENT_ID: env.GITHUB_OAUTH_CLIENT_ID,
+      GITHUB_OAUTH_CLIENT_SECRET: env.GITHUB_OAUTH_CLIENT_SECRET,
+      OAUTH_STATE_SECRET: env.OAUTH_STATE_SECRET,
+    };
+    console.info('oauth-runtime-diagnostic', {
+      bindings: Object.fromEntries(
+        Object.entries(bindings).map(([name, value]) => [
+          name,
+          { present: typeof value === 'string' && value.length > 0, type: typeof value },
+        ]),
+      ),
+      cmsSiteUrlMatchesRequestOrigin: url.origin === env.CMS_SITE_URL,
+    });
+  }
+
   if (
     !env.CMS_SITE_URL ||
     url.origin !== env.CMS_SITE_URL ||

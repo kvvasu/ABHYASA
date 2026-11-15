@@ -49,6 +49,45 @@ describe('OAuth callback page', () => {
 });
 
 describe('GitHub OAuth functions', () => {
+  it('logs only sanitized binding diagnostics on the Preview host', async () => {
+    const log = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const request = new Request(
+      'https://feature-phase-04-content-man.servicenow-learn-easy.pages.dev/api/auth/github',
+    );
+
+    try {
+      const response = (await startAuth({ request, env } as never)) as Response;
+
+      expect(response.status).toBe(500);
+      expect(log).toHaveBeenCalledWith('oauth-runtime-diagnostic', {
+        bindings: {
+          CMS_SITE_URL: { present: true, type: 'string' },
+          GITHUB_OAUTH_CLIENT_ID: { present: true, type: 'string' },
+          GITHUB_OAUTH_CLIENT_SECRET: { present: true, type: 'string' },
+          OAUTH_STATE_SECRET: { present: true, type: 'string' },
+        },
+        cmsSiteUrlMatchesRequestOrigin: false,
+      });
+      expect(JSON.stringify(log.mock.calls)).not.toContain('client-id');
+      expect(JSON.stringify(log.mock.calls)).not.toContain('client-secret');
+      expect(JSON.stringify(log.mock.calls)).not.toContain(SECRET);
+    } finally {
+      log.mockRestore();
+    }
+  });
+
+  it('does not log diagnostics for non-Preview hosts', async () => {
+    const log = vi.spyOn(console, 'info').mockImplementation(() => {});
+    const request = new Request('https://site.test/api/auth/github');
+
+    try {
+      await startAuth({ request, env } as never);
+      expect(log).not.toHaveBeenCalled();
+    } finally {
+      log.mockRestore();
+    }
+  });
+
   it('rejects a host that does not match CMS_SITE_URL', async () => {
     const request = new Request('https://other.test/api/auth/github');
     const response = (await startAuth({ request, env } as never)) as Response;
