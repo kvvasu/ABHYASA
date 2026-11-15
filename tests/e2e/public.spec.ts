@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 const pages = [
   { path: '/', heading: /Learn ServiceNow by doing the work/ },
-  { path: '/courses', heading: /Five courses/ },
+  { path: '/courses', heading: /courses\. One practical path/ },
   { path: '/courses/servicenow-itsm-fundamentals', heading: /ServiceNow ITSM Fundamentals/ },
   { path: '/about', heading: /Practical teaching/ },
   { path: '/faq', heading: /Answers before you enroll/ },
@@ -33,6 +33,29 @@ test('catalog lists every sample course', async ({ page }) => {
   const cards = page.locator('main h3');
   await expect(cards).toHaveCount(5);
   await expect(page.getByText('Sample course content for review.')).toBeVisible();
+});
+
+test('catalog follows the Markdown course order', async ({ page }) => {
+  await page.goto('/courses');
+  await expect(page.locator('main h3')).toHaveText([
+    'ServiceNow ITSM Fundamentals',
+    'ServiceNow ITOM Discovery',
+    'ServiceNow CMDB and IRE',
+    'ServiceNow Event Management',
+    'ServiceNow HRSD',
+  ]);
+});
+
+test('course modules follow the Markdown order', async ({ page }) => {
+  await page.goto('/courses/servicenow-itsm-fundamentals');
+  await expect(page.locator('main summary')).toHaveText([
+    /Getting started/,
+    /Incident Management/,
+    /Problem Management/,
+    /Change Management/,
+    /Knowledge Management/,
+    /Wrap-up/,
+  ]);
 });
 
 test('course detail shows curriculum and sample notices', async ({ page }) => {

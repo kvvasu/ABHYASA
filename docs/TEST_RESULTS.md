@@ -1,5 +1,76 @@
 # Test Results
 
+## Phase 4 — OAuth preview fix — 2026-11-15
+
+Environment: Node 24.19.0, npm 11.17.0, Linux (WSL), Chromium 159 headless,
+Wrangler 4.162.0.
+
+| Check                   | Command                            | Result                                                              |
+| ----------------------- | ---------------------------------- | ------------------------------------------------------------------- |
+| Type and Astro check    | `npm run check`                    | Pass. 0 errors, warnings, or hints (50 files).                      |
+| Unit tests              | `npm test`                         | Pass. 4 files, 21 tests.                                            |
+| Lint                    | `npm run lint`                     | Pass.                                                               |
+| Format check            | `npm run format:check`             | Pass.                                                               |
+| Build                   | `npm run build`                    | Pass. 15 pages; deployment origin injected when `CMS_SITE_URL` set. |
+| Public output scan      | `npm run scan:public`              | Pass. 34 files; no private lesson data or secrets.                  |
+| Browser tests           | `CI=1 npm run test:e2e`            | Pass. 29 Chromium tests.                                            |
+| Deployed preview start  | Feature preview `/api/auth/github` | Reaches handler, currently 500 until Preview vars are set.          |
+| Production start        | Production `/api/auth/github`      | 404 on current `develop` deployment; unchanged.                     |
+| Full OAuth and draft PR | Manual after setup                 | Pending OAuth App and Cloudflare account configuration.             |
+
+Verified deployment URLs:
+
+- Branch preview: <https://feature-phase-04-content-man.servicenow-learn-easy.pages.dev>
+- Commit preview: <https://d8e88593.servicenow-learn-easy.pages.dev>
+
+Neither preview can complete login until account settings are configured. No
+OAuth secrets were accessed or changed.
+
+| Check                   | Command                    | Result                                                                    |
+| ----------------------- | -------------------------- | ------------------------------------------------------------------------- |
+| Type and Astro check    | `npm run check`            | Pass. 0 errors, 0 warnings, 0 hints (49 files).                           |
+| Unit tests              | `npm test`                 | Pass. 4 files, 19 tests.                                                  |
+| Lint                    | `npm run lint`             | Pass.                                                                     |
+| Format check            | `npm run format:check`     | Pass.                                                                     |
+| Production build        | `npm run build`            | Pass. 15 pages.                                                           |
+| Browser tests           | `npm run test:e2e`         | Pass. 29 tests in Chromium through local Cloudflare Pages preview.        |
+| Live CMS config         | Chromium `/admin/`         | Pass. Decap shows "Login with GitHub"; no config error or browser errors. |
+| Live GitHub OAuth login | `/admin/` on deployed site | Not run. Credentials and deployed OAuth App unavailable.                  |
+
+## Phase 4 — CMS config fix — 2026-11-14
+
+Environment: Node 24.19.0, npm 11.17.0, Linux (WSL), Chromium 159 headless,
+Wrangler 4.162.0.
+
+| Check                       | Command                                 | Result                                                                                 |
+| --------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------- |
+| Type and Astro check        | `npm run check`                         | Pass. 0 errors, 0 warnings, 0 hints (48 files).                                        |
+| Unit tests                  | `npm test`                              | Pass. 3 files, 12 tests.                                                               |
+| Lint                        | `npm run lint`                          | Pass.                                                                                  |
+| Format check                | `npm run format:check`                  | Pass.                                                                                  |
+| Production build            | `npm run build`                         | Pass. 15 pages generated from Markdown collections.                                    |
+| Browser tests               | `npm run test:e2e`                      | Pass. 27 tests in Chromium through `wrangler pages dev`.                               |
+| Public output scan          | `npm run scan:public`                   | Pass. 33 files in `dist/`; no video IDs, R2 hosts, keys, or secret names.              |
+| Secret scan (tracked files) | `git grep` token/key patterns           | Pass. No token prefixes, private key blocks, or filled secret values. See notes.       |
+| OAuth redirect integration  | `wrangler pages dev` with mock bindings | Pass. 302 to GitHub with client ID, callback, `public_repo`, signed state, and cookie. |
+| Live GitHub OAuth login     | `/admin/` on a deployed site            | Not run. No OAuth App or Cloudflare secrets; cannot be tested from this workspace.     |
+
+Notes:
+
+- Unit tests cover content privacy, sample flags, Decap config, OAuth state
+  signing and expiry, tampering and wrong-secret rejection, redirect parameters,
+  cookie attributes, callback script escaping, and token exchange handling.
+- Browser tests cover the admin entry point, admin config serving, missing OAuth
+  configuration, catalog course order, module order, and every public route.
+- The OAuth integration check used fake bindings for the client ID, client secret,
+  and state secret. It proves the redirect and cookie path in the Pages Functions
+  runtime. It does not prove a real GitHub token exchange or Decap login.
+- `gitleaks` and `trufflehog` are not installed. The secret scan used `git grep`
+  patterns for GitHub, Google, Razorpay, and Stripe token prefixes, private key
+  blocks, and long secret assignments. Install `gitleaks` in CI for entropy
+  scanning.
+- No test was skipped.
+
 ## Phase 3 — 2026-11-14
 
 Environment: Node 24.19.0, npm 11.17.0, Linux (WSL), Chromium 159 headless.

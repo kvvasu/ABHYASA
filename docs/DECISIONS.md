@@ -128,17 +128,46 @@ access control.
 
 ## ADR-009: Host Decap OAuth in a Cloudflare Function
 
-Status: proposed.
+Status: accepted (Phase 4 implementation, 2026-11-14). Live login pending account
+setup.
 
 Decision: Implement GitHub OAuth in `/api/auth/github` and
-`/api/auth/callback` with a signed state cookie.
+`/api/auth/callback` with a signed state cookie. Use a standard GitHub OAuth App
+and Decap's `github` backend with `auth_endpoint` pointed at the same-origin
+Function.
 
-Reason: A static Decap build has no OAuth broker. Third-party brokers add a
-dependency and a trust boundary.
+Reason: A static Decap build has no OAuth broker. The Function is small, runs on
+the existing free Cloudflare Pages plan, keeps the client secret on the same
+origin, and adds no third-party trust boundary or paid service. Alternatives were
+rejected:
 
-Consequence: Create a GitHub OAuth App. Store client secret in Cloudflare. Test
-the popup flow in Phase 4. If Cloudflare cannot complete the flow, stop and
-request approval for an alternative.
+- DecapBridge: an external broker. Adds an availability and privacy dependency.
+- Netlify Identity + Git Gateway: requires a Netlify account and moves auth off
+  Cloudflare Pages.
+- A separate OAuth worker project: more deployment surface for two short handlers.
+- Calling GitHub from the browser: impossible without exposing the client secret.
+
+Consequence: Create a GitHub OAuth App and store its credentials in Cloudflare
+Secrets. Test the popup flow before Phase 4 acceptance. If Cloudflare cannot
+complete the flow, stop and request approval for an alternative.
+
+Security risks and mitigations:
+
+- Client secret exposure. It lives only in a Pages secret and is used only in the
+  server-to-server token exchange. It is never in Git or the static build.
+- Token handling. The access token is posted to the Decap opener after an exact
+  origin check and is then stored by Decap in browser storage. Any same-origin
+  script injection could read it. Keep third-party scripts out of `/admin/`, pin
+  the Decap CDN version, and add a Content Security Policy in a later phase.
+- Scope. `public_repo` allows writes to any public repository the signed-in user
+  can push to. Only repository collaborators with push access should use the CMS.
+- CSRF and replay. The state value is random, HMAC-signed, bound to an `HttpOnly`,
+  `SameSite=Lax` cookie scoped to `/api/auth`, and expires after 10 minutes.
+- Single callback URL. GitHub OAuth Apps allow one callback, so preview hostnames
+  cannot complete login without a second OAuth App.
+- No PKCE. Decap's popup flow uses a confidential client; the secret and the
+  state check carry the protection.
+- Logging. Functions do not log tokens, codes, or environment values.
 
 ## ADR-010: YouTube Unlisted with Plyr, no DRM claim
 

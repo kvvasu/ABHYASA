@@ -2,7 +2,9 @@
 import PublicLayout from '../../layouts/PublicLayout.astro';
 import Section from '../../components/ui/Section.astro';
 import CourseCard from '../../components/CourseCard.astro';
-import { courses, SAMPLE_CONTENT_NOTE } from '../../data/courses';
+import { getCourses, SAMPLE_CONTENT_NOTE } from '../../lib/courses';
+
+const courses = await getCourses();
 ---
 
 <PublicLayout
@@ -13,7 +15,7 @@ import { courses, SAMPLE_CONTENT_NOTE } from '../../data/courses';
     size="hero"
     headingLevel="h1"
     eyebrow="Course catalog"
-    title="Five courses. One practical path."
+    title={`${courses.length} courses. One practical path.`}
     description="Start with ITSM fundamentals, then move into discovery, CMDB, event management, or HR service delivery. Every course listing below is sample content for review."
   >
     <div class="rounded-[12px] border border-mist-border bg-air-wash p-5">

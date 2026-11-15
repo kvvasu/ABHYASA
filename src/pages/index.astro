@@ -6,9 +6,10 @@ import Button from '../components/ui/Button.astro';
 import Card from '../components/ui/Card.astro';
 import Section from '../components/ui/Section.astro';
 import CourseCard from '../components/CourseCard.astro';
-import { courses, SAMPLE_CONTENT_NOTE } from '../data/courses';
+import { getCourses, SAMPLE_CONTENT_NOTE } from '../lib/courses';
 
-const featured = courses.filter((course) => course.featured).slice(0, 3);
+const courses = await getCourses();
+const featured = courses.filter((course) => course.data.featured).slice(0, 3);
 
 const faqItems = [
   {
@@ -99,7 +100,7 @@ const faqItems = [
     tone="wash"
     eyebrow="Course catalog"
     title="Start with the work you need to do."
-    description="Five sample courses cover the core ServiceNow administration path. Full curriculum details are on each course page."
+    description={`${courses.length} sample courses cover the core ServiceNow administration path. Full curriculum details are on each course page.`}
   >
     <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {featured.map((course) => (
@@ -108,7 +109,7 @@ const faqItems = [
     </div>
     <div class="mt-8 flex flex-wrap items-center gap-3">
       <Button href="/courses" variant="secondary">
-        See all 5 courses
+        See all {courses.length} courses
       </Button>
       <p class="text-caption text-graphite-copy">Sample catalog. Content is not final.</p>
     </div>
